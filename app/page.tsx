@@ -1,3 +1,4 @@
+'use client'
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Features from "@/components/home/features";
@@ -6,10 +7,15 @@ import UseCases from "@/components/home/use-cases";
 import Footer from "@/components/layout/footer";
 import { ParticleBackground } from "@/components/home/particle-bg";
 import { ArrowRight } from "lucide-react";
+import { WalletModal } from "@/components/wallet-modal";
+import { useState } from "react";
 import Header from "@/components/layout/header";
 
 export default function Home() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
+    <>
     <div className="min-h-screen bg-gradient-to-r from-[#cdffd8] to-[#94b9ff] z-10">
       <div className="fixed inset-0 z-0">
         <ParticleBackground />
@@ -55,11 +61,17 @@ export default function Home() {
           </div>
         </div>
 
-        <Features />
-        <HowItWorks />
-        <UseCases />
+          <Features />
+          <HowItWorks />
+          <UseCases />
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+      
+      <WalletModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
+    </>
   );
 }
