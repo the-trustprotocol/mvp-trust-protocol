@@ -6,25 +6,45 @@ import Link from 'next/link'
 
 export default function AppHeader() {
   return (
-     <header className="sticky top-0 z-50 transition-all duration-300 bg-gradient-to-r from-[#cdffd8] to-[#94b9ff] w-full">
-     <div className="container mx-auto flex h-[70px] items-center justify-between ">
-     <div className="flex items-center space-x-2">
-          <Image src="/unn_finance.webp" width={40} height={40} alt="Trust Protocol" />
-          <Link href="/" className="text-xl md:text-2xl font-serif text-primary font-bold tracking-wider">
+    <header className="sticky top-0 z-50 w-full bg-gradient-to-r from-[#cdffd8] to-[#94b9ff]">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6">
+        {/* Logo Section */}
+        <div className="flex items-center space-x-2">
+          <Image 
+            src="/unn_finance.webp" 
+            width={40} 
+            height={40} 
+            alt="Trust Protocol"
+            className="h-8 w-8 sm:h-10 sm:w-10"
+          />
+          <Link 
+            href="/" 
+            className="text-lg font-bold tracking-wider text-primary sm:text-xl md:text-2xl"
+          >
             TRUST
           </Link>
         </div>
-       <div className="flex items-center gap-4">
-         <Button variant="outline" className="gap-2">
-           <Trophy className="h-4 w-4" />
-           Leaderboard
-         </Button>
-         <Button variant="outline" className="gap-2">
-           <Wallet className="h-4 w-4" />
-           Wallet
-         </Button>
-       </div>
-     </div>
-   </header>
+
+        {/* Navigation Buttons - Hidden on mobile */}
+        <div className="flex items-center gap-2 sm:gap-4">
+          <Button 
+            variant="outline" 
+            size="sm"
+            className="gap-1 text-xs sm:gap-2 sm:text-sm"
+          >
+            <Trophy className="h-3 w-3 sm:h-4 sm:w-4" />
+            <span className="hidden sm:inline">Leaderboard</span>
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm"
+            className="gap-1 text-xs sm:gap-2 sm:text-sm"
+          >
+            <Wallet className="h-3 w-3 sm:h-4 sm:w-4" />
+            <span className="hidden sm:inline">Wallet</span>
+          </Button>
+        </div>
+      </div>
+    </header>
   )
 }
