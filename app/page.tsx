@@ -6,6 +6,7 @@ import UseCases from "@/components/home/use-cases";
 import Footer from "@/components/layout/footer";
 import { ParticleBackground } from "@/components/home/particle-bg";
 import { ArrowRight } from "lucide-react";
+import Header from "@/components/layout/header";
 import { ConnectButton } from "@/components/connect-button";
 
 export default function Home() {
@@ -14,7 +15,8 @@ export default function Home() {
       <div className="fixed inset-0 z-0">
         <ParticleBackground />
       </div>
-      <div className="container mx-auto px-4 relative z-10">
+      <Header />
+      <div className="container mx-auto px-4">
         <div className="text-center py-16">
           <div className="w-full flex items-center justify-center">
             <Image
