@@ -48,6 +48,7 @@ export default function Home() {
 
             <Button
               type="submit"
+              onClick={() => setIsModalOpen(true)}
               className="h-12 px-6 text-base whitespace-nowrap w-full sm:w-auto text-white rounded-lg"
             >
               Get Started <ArrowRight className="ml-2 h-4 w-4" />
