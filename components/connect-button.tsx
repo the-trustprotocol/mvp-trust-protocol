@@ -12,13 +12,16 @@ export function ConnectButton() {
   }
 
   return (
-    <div>
+    <div className="w-full flex flex-col items-center">
       {isConnected ? (
-        <div className="flex gap-2">
-          <span>{address?.slice(0, 6)}...{address?.slice(-4)}</span>
+        <div className="flex flex-col items-center gap-4 w-full">
+          <span className="text-primary-foreground font-medium">
+            {address?.slice(0, 6)}...{address?.slice(-4)}
+          </span>
           <Button 
             onClick={() => disconnect()}
-            className="px-4 py-2 bg-primary-foreground text-white rounded"
+            variant="destructive"
+            className="w-full"
           >
             Disconnect
           </Button>
@@ -26,7 +29,8 @@ export function ConnectButton() {
       ) : (
         <Button
           onClick={handleConnect}
-          className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+          className="w-full py-6 text-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white transition-colors"
+          size="lg"
         >
           Connect Wallet
         </Button>
