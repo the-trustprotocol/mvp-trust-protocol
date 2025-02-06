@@ -6,6 +6,7 @@ import UseCases from "@/components/home/use-cases";
 import Footer from "@/components/layout/footer";
 import { ParticleBackground } from "@/components/home/particle-bg";
 import { ArrowRight } from "lucide-react";
+import Header from "@/components/layout/header";
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
       <div style={{ zIndex: -10 }} className="overflow-hidden">
         <ParticleBackground />
       </div>
+      <Header />
       <div className="container mx-auto px-4">
         <div className="text-center py-16">
           <div className="w-full flex items-center justify-center">
