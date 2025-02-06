@@ -1,9 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 const steps = [
-  { title: "Create Identity", description: "Establish your unique on-chain identity with Trust Protocol." },
-  { title: "Build Reputation", description: "Engage in on-chain activities to build your trust score and reputation." },
-  { title: "Stake Bonds", description: "Back your reputation with financial commitments to increase trustworthiness." },
+  { title: "Create or Join Bonds", description: "Deposit funds into a bond (one-way or mutual)" },
+  { title: "Earn Reputation", description: "Active bonds increase your reputation over time" },
+  { title: "Break Bonds", description: "Incurs a 10% penalty to the treasury and reputation loss" },
   { title: "Utilize Trust", description: "Leverage your established trust across various DApps and platforms." },
 ]
 

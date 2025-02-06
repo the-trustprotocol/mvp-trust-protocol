@@ -35,9 +35,9 @@ export default function Header() {
           <Link href="https://github.com/the-trustprotocol" className="text-primary-foreground hover:underline">
             Github
           </Link>
-          <Link href="https://www.canva.com/design/DAGdTE9O1ec/xb61kJvdKb_bM-K0NTBZ5A/view?utm_content=DAGdTE9O1ec&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h23a25db8b0#1" className="text-primary-foreground hover:underline">
+          {/* <Link href="https://www.canva.com/design/DAGdTE9O1ec/xb61kJvdKb_bM-K0NTBZ5A/view?utm_content=DAGdTE9O1ec&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h23a25db8b0#1" className="text-primary-foreground hover:underline">
            Deck
-          </Link>
+          </Link> */}
         </nav>
 
         <div className="flex items-center space-x-4">
@@ -64,9 +64,9 @@ export default function Header() {
             <Link href="https://github.com/the-trustprotocol" className=" block py-2" onClick={toggleMenu}>
             Github
             </Link>
-            <Link href="https://www.canva.com/design/DAGdTE9O1ec/xb61kJvdKb_bM-K0NTBZ5A/view?utm_content=DAGdTE9O1ec&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h23a25db8b0#1" className=" block py-2" onClick={toggleMenu}>
+            {/* <Link href="https://www.canva.com/design/DAGdTE9O1ec/xb61kJvdKb_bM-K0NTBZ5A/view?utm_content=DAGdTE9O1ec&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h23a25db8b0#1" className=" block py-2" onClick={toggleMenu}>
             Pitch deck
-            </Link>
+            </Link> */}
           </div>
         </nav>
       )}
