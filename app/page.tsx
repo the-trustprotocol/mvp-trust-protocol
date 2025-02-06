@@ -6,6 +6,7 @@ import UseCases from "@/components/home/use-cases";
 import Footer from "@/components/layout/footer";
 import { ParticleBackground } from "@/components/home/particle-bg";
 import { ArrowRight } from "lucide-react";
+import { ConnectButton } from "@/components/connect-button";
 
 export default function Home() {
   return (
