@@ -14,6 +14,7 @@ export default function Home() {
       <div className="fixed inset-0 z-0">
         <ParticleBackground />
       </div>
+      <Header />
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center py-16">
           <div className="w-full flex items-center justify-center">

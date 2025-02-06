@@ -139,7 +139,9 @@ export function ParticleBackground() {
     <canvas
       ref={canvasRef}
       className="absolute inset-0 w-full h-full pointer-events-none"
-      style={{ zIndex: -1 }} // Explicit negative z-index
+      style={{ zIndex: -1, 
+        mixBlendMode: 'multiply' 
+      }} // Explicit negative z-index
     />
   );
 }
