@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Slider } from "@/components/ui/slider"
 import { useState } from 'react'
 
-interface BondModalProps {
+export interface BondModalProps {
   isOpen: boolean
   onClose: () => void
   type: 'create' | 'withdraw'

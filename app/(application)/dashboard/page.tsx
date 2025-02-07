@@ -1,3 +1,4 @@
+'use client'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -11,8 +12,14 @@ import {
   WalletIcon,
   SettingsIcon
 } from "lucide-react"
+import { BondModal } from "@/components/bond-modal"
+
+import { useState } from 'react'
 
 export default function Dashboard() {
+
+  const [isBondModalOpen, setIsBondModalOpen] = useState(false)
+  const [bondModalType, setBondModalType] = useState<'create' | 'withdraw'>('create')
   // Mock data
   const bonds = [
     {
@@ -122,6 +129,10 @@ export default function Dashboard() {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
                 <Button 
                   className="h-12 px-6 text-base whitespace-nowrap w-full sm:w-auto bg-[#0066FF] hover:bg-[#0052CC] text-white"
+                  onClick={() => {
+                    setBondModalType('create')
+                    setIsBondModalOpen(true)
+                  }}
                 >
                   <PlusIcon className="mr-2 h-4 w-4" />
                   Add Funds
@@ -136,6 +147,11 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
+          <BondModal
+            isOpen={isBondModalOpen}
+            onClose={() => setIsBondModalOpen(false)}
+            type={bondModalType}
+          />
 </div>
 
         {/* Scrollable Table Container */}
