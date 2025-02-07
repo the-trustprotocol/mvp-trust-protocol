@@ -21,34 +21,25 @@ import { useState } from 'react'
 export default function Dashboard() {
 
   const [isBondModalOpen, setIsBondModalOpen] = useState(false)
-  const [bondModalType, setBondModalType] = useState<'create' | 'withdraw'>('create')
+  const [bondModalType, setBondModalType] = useState<'create' | 'withdraw' | 'break'>('create')
   // Mock data
   const bonds = [
     {
-      user: 'user2.eth',
-      yourStake: '1.5 ETH',
-      counterpartyStake: '0.5 ETH',
+      user: '0xECD...02',
+      yourStake: '1 USD',
+      counterpartyStake: '0.5 USD',
       type: 'Two-Way',
-      initiated: '2024-02-06',
+      initiated: '2024-02-07',
       status: 'Active'
     },
     {
-      user: 'user3.eth',
-      yourStake: '2.0 ETH',
-      counterpartyStake: '0.0 ETH',
+      user: '0x50D...15',
+      yourStake: '1 USD',
+      counterpartyStake: '0.0 USD',
       type: 'One-Way',
-      initiated: '2024-02-05',
+      initiated: '2024-02-07',
       status: 'Active'
-    },
-    {
-      user: 'user4.eth',
-      yourStake: '1.0 ETH',
-      counterpartyStake: '1.0 ETH',
-      type: 'Two-Way',
-      initiated: '2024-02-04',
-      status: 'Broken',
-      brokenDate: '2024-02-07'
-    },
+    }
   ]
 
   return (
@@ -80,8 +71,8 @@ export default function Dashboard() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">$0.00</div>
-                <p className="text-xs text-muted-foreground mt-1">+0.00% from last month</p>
+                <div className="text-2xl font-bold">$2.00</div>
+                <p className="text-xs text-muted-foreground mt-1">+200% from last month</p>
               </CardContent>
             </Card>
 
@@ -98,7 +89,7 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">2</div>
-                <p className="text-xs text-muted-foreground mt-1">1 broken bond</p>
+                <p className="text-xs text-muted-foreground mt-1">0 broken bond</p>
               </CardContent>
             </Card>
 
@@ -114,8 +105,8 @@ export default function Dashboard() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">0.0</div>
-                <p className="text-xs text-muted-foreground mt-1">Global rank: #-</p>
+                <div className="text-2xl font-bold">Coming Soon</div>
+               
               </CardContent>
             </Card>
           </div>
@@ -236,7 +227,7 @@ export default function Dashboard() {
                               className="gap-1 text-red-600 border-red-200 hover:bg-red-50"
                               onClick={() => {
                                 setIsBondModalOpen(true)
-                                setBondModalType('withdraw')
+                                setBondModalType('break')
                               }}
                             >
                               <UnlinkIcon className="w-4 h-4" />
@@ -244,9 +235,7 @@ export default function Dashboard() {
                             </Button>
                           </div>
                         ) : (
-                          <span className="text-muted-foreground text-sm">
-                            Broken on {bond.brokenDate}
-                          </span>
+                          null
                         )}
                       </TableCell>
                     </TableRow>
