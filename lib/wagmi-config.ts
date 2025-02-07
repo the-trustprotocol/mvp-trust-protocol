@@ -10,6 +10,6 @@ export const config = createConfig({
     [base.id] : http()
   },
   connectors: [
-    injected({ target: 'metaMask' }) // Explicitly target MetaMask
+    injected()
   ]
 })
