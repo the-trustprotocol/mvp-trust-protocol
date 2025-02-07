@@ -1,3 +1,4 @@
+'use client'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -141,6 +142,11 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
+          <BondModal
+            isOpen={isBondModalOpen}
+            onClose={() => setIsBondModalOpen(false)}
+            type={bondModalType}
+          />
 </div>
 
         {/* Scrollable Table Container */}
