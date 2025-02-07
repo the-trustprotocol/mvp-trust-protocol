@@ -39,16 +39,21 @@ export default function Dashboard() {
       initiated: '2024-02-04',
       status: 'Broken',
       brokenDate: '2024-02-07'
-    }
+    },
   ]
 
   return (
     <div className="min-h-screen bg-background bg-gradient-to-r from-[#cdffd8] to-[#94b9ff] ">
-      <main className="container mx-auto p-4 flex flex-col">
+      <main className="container mx-auto p-4 flex flex-col gap-8">
         {/* Header */}
-        <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-[#94b9ff] mb-8">
-          Trust Dashboard
-        </h1>
+        <div className="flex flex-col gap-2">
+          <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-[#94b9ff]">
+            Trust Dashboard
+          </h1>
+          <p className="text-lg text-muted-foreground">
+            Track and manage your on-chain trust relationships
+          </p>
+        </div>
 
         {/* Metrics and Actions Container */}
         <div className="flex flex-col gap-8 flex-shrink-0">
