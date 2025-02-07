@@ -257,40 +257,8 @@ export default function Dashboard() {
           </Card>
         </div>
 
-        {/* Scrollable Table Container */}
-        <div className="mt-8 flex-1 overflow-hidden min-h-[400px] ">
-          <Card className="h-full flex flex-col">
-            <CardHeader className="border-b">
-              <h2 className="text-xl font-semibold">Active Bonds</h2>
-            </CardHeader>
-            <CardContent className="p-0 flex-1 overflow-auto">
-              <Table>
-                <TableHeader className="bg-secondary/50 sticky top-0">
-                  
-                </TableHeader>
-                <TableBody>
-                  {bonds.map((bond, index) => (
-                    <TableRow key={index} className="hover:bg-secondary/30">
-                      
-                      <TableCell className="text-right">
-                        {bond.status === 'Active' ? (
-                          <Button variant="ghost" size="sm" className="gap-2">
-                            <SettingsIcon className="w-4 h-4" />
-                            Manage
-                          </Button>
-                        ) : (
-                          <span className="text-muted-foreground text-sm">
-                            Broken on {bond.brokenDate}
-                          </span>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        </div>
+       
+      
       </main>
       <BondModal
         isOpen={isBondModalOpen}

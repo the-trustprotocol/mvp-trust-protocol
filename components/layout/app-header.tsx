@@ -33,7 +33,9 @@ export default function AppHeader() {
             className="gap-1 text-xs sm:gap-2 sm:text-sm"
           >
             <Trophy className="h-3 w-3 sm:h-4 sm:w-4" />
-            <span className="hidden sm:inline">Leaderboard</span>
+            <span className="hidden sm:inline">
+            <Link href="/leaderboard">Leaderboard</Link>
+            </span>
           </Button>
           <Button 
             variant="outline" 

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Slider } from "@/components/ui/slider"
 import { useState } from 'react'
+import { showTransactionToast } from '@/components/showTransactionToast'
 
 export interface BondModalProps {
   isOpen: boolean
@@ -23,6 +24,9 @@ export function BondModal({ isOpen, onClose, type }: BondModalProps) {
   const handleSubmit = () => {
     if (type === 'create') {
       // Handle create bond logic
+
+      showTransactionToast('123223232323')
+      
       console.log('Creating bond:', { address, amount })
     } else {
       // Handle withdraw bond logic
