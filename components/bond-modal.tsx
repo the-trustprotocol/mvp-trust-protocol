@@ -11,33 +11,36 @@ import { showTransactionToast } from '@/components/showTransactionToast'
 export interface BondModalProps {
   isOpen: boolean
   onClose: () => void
-  type: 'create' | 'withdraw' | 'break'
+  type: 'create' | 'withdraw' | 'break' 
 }
 
 export function BondModal({ isOpen, onClose, type }: BondModalProps) {
   const [address, setAddress] = useState('')
   const [amount, setAmount] = useState('')
   const [sliderValue, setSliderValue] = useState([50])
-  const [confirmBreak, setConfirmBreak] = useState(false)
+  const [isLoading, setIsLoading] = useState(false) // Loading state
 
   if (!isOpen) return null
 
-  const handleSubmit = () => {
-    if (type === 'break' && !confirmBreak) {
-      setConfirmBreak(true)
-      return
-    }
+  const handleSubmit = async () => {
+    setIsLoading(true) // Start loading
+
+    // Artificial delay of 3 seconds
+    await new Promise((resolve) => setTimeout(resolve, 3000))
 
     if (type === 'create') {
-      showTransactionToast('123223232323')
+      showTransactionToast('Bond created successfully!')
       console.log('Creating bond:', { address, amount })
     } else if (type === 'withdraw') {
+      showTransactionToast('Bond withdrawn successfully!')
       console.log('Withdrawing bond:', { address, amount })
     } else if (type === 'break') {
-      console.log('Breaking bond:', { address, amount })
+      showTransactionToast('Bond broken successfully!')
+      console.log('Breaking bond')
     }
-    onClose()
-    setConfirmBreak(false)
+
+    setIsLoading(false) // Stop loading
+    onClose() // Close modal after processing
   }
 
   const modalTitle = {
@@ -71,98 +74,91 @@ export function BondModal({ isOpen, onClose, type }: BondModalProps) {
                   <X size={24} />
                 </button>
 
-                <h2 className={`text-3xl font-bold mb-12 text-center ${
-                  type === 'break' ? 'text-red-600' : 'text-primary-foreground'
-                }`}>
-                  {modalTitle}
+                <h2 className="text-3xl font-bold text-primary-foreground mb-12 text-center">
+                  {type === 'create'
+                    ? 'Create Bond'
+                    : type === 'withdraw'
+                    ? 'Withdraw Bond'
+                    : 'Break Bond'}
                 </h2>
 
                 <div className="w-full max-w-[380px] mx-auto space-y-6">
-                  {type === 'break' && (
-                    <div className={`p-4 rounded-lg ${
-                      confirmBreak ? 'bg-red-100 border-2 border-red-500' : 'bg-yellow-100'
-                    }`}>
-                      <div className="flex items-center gap-2 mb-2">
-                        <AlertTriangle className={confirmBreak ? 'text-red-500' : 'text-yellow-500'} />
-                        <span className={`font-semibold ${
-                          confirmBreak ? 'text-red-700' : 'text-yellow-700'
-                        }`}>
-                          {confirmBreak ? 'Final Warning' : 'Warning'}
-                        </span>
+                  {type === 'break' ? (
+                    <>
+                      {/* Confirmation text */}
+                      <p className="text-sm text-red-600 text-center">Are you sure?</p>
+                      {/* Big red confirmation button */}
+                      <Button
+                        onClick={handleSubmit}
+                        className="w-full py-6 text-lg font-semibold bg-red-600 hover:bg-red-700 text-white transition-colors mt-8"
+                        size="lg"
+                        disabled={isLoading}
+                      >
+                        {isLoading ? 'Processing...' : 'Confirm break bond'}
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      {/* ENS Domain Input */}
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-primary-foreground">
+                          ENS Domain or Address
+                        </label>
+                        <Input
+                          type="text"
+                          placeholder="Enter ENS domain or address"
+                          value={address}
+                          onChange={(e) => setAddress(e.target.value)}
+                          className="bg-white bg-opacity-20 border-none text-primary-foreground placeholder:text-primary-foreground/50"
+                        />
                       </div>
-                      <p className={`text-sm ${
-                        confirmBreak ? 'text-red-600' : 'text-yellow-600'
-                      }`}>
-                        {confirmBreak 
-                          ? 'Breaking this bond will result in a 10% penalty and permanent reputation loss. This action cannot be undone.'
-                          : 'Are you sure you want to break this bond? This action will have consequences on your reputation.'}
-                      </p>
-                    </div>
-                  )}
 
-                  {/* ENS Domain Input */}
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-primary-foreground">
-                      ENS Domain or Address
-                    </label>
-                    <Input
-                      type="text"
-                      placeholder="Enter ENS domain or address"
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
-                      className="bg-white bg-opacity-20 border-none text-primary-foreground placeholder:text-primary-foreground/50"
-                    />
-                  </div>
-
-                  {/* Amount Input */}
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-primary-foreground">
-                      Amount
-                    </label>
-                    <Input
-                      type="number"
-                      placeholder="Enter amount"
-                      value={amount}
-                      onChange={(e) => setAmount(e.target.value)}
-                      className="bg-white bg-opacity-20 border-none text-primary-foreground placeholder:text-primary-foreground/50"
-                    />
-                  </div>
-
-                  {/* Slider - Only show for create and withdraw */}
-                  {type !== 'break' && (
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm text-primary-foreground">
-                        <span>Amount</span>
-                        <span>Max amount: {sliderValue[0]}%</span>
+                      {/* Amount Input */}
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-primary-foreground">
+                          Amount
+                        </label>
+                        <Input
+                          type="number"
+                          placeholder="Enter amount"
+                          value={amount}
+                          onChange={(e) => setAmount(e.target.value)}
+                          className="bg-white bg-opacity-20 border-none text-primary-foreground placeholder:text-primary-foreground/50"
+                        />
                       </div>
-                      <Slider
-                        value={sliderValue}
-                        onValueChange={setSliderValue}
-                        max={100}
-                        step={1}
-                        className="my-4"
-                      />
-                    </div>
-                  )}
 
-                  {/* Submit Button */}
-                  <Button
-                    onClick={handleSubmit}
-                    className={`w-full py-6 text-lg font-semibold transition-colors mt-8 ${
-                      type === 'break'
-                        ? confirmBreak
-                          ? 'bg-red-600 hover:bg-red-700 text-white'
-                          : 'bg-yellow-600 hover:bg-yellow-700 text-white'
-                        : 'bg-blue-600 hover:bg-blue-700 text-white'
-                    }`}
-                    size="lg"
-                  >
-                    {type === 'break'
-                      ? confirmBreak
-                        ? 'Confirm Break Bond'
-                        : 'Break Bond'
-                      : modalTitle}
-                  </Button>
+                      {/* Slider */}
+                      {type === 'withdraw' && (
+                        <div className="space-y-2">
+                          <div className="flex justify-between text-sm text-primary-foreground">
+                            <span>Amount</span>
+                            <span>Max amount: {sliderValue[0]}%</span>
+                          </div>
+                          <Slider
+                            value={sliderValue}
+                            onValueChange={setSliderValue}
+                            max={100}
+                            step={1}
+                            className="my-4"
+                          />
+                        </div>
+                      )}
+
+                      {/* Submit Button */}
+                      <Button
+                        onClick={handleSubmit}
+                        className="w-full py-6 text-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white transition-colors mt-8"
+                        size="lg"
+                        disabled={isLoading}
+                      >
+                        {isLoading
+                          ? 'Processing...'
+                          : type === 'create'
+                          ? 'Create Bond'
+                          : 'Withdraw Bond'}
+                      </Button>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
