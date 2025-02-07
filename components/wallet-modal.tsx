@@ -4,6 +4,7 @@ import { ParticleBackground } from "@/components/home/particle-bg"
 import { ConnectButton } from "@/components/connect-button"
 import { useAccount } from 'wagmi'
 import { X } from 'lucide-react'
+import { useEffect } from 'react'
 
 export function WalletModal({ 
   isOpen, 
@@ -16,10 +17,12 @@ export function WalletModal({
   const { isConnected } = useAccount()
 
   // Redirect when connected
-  if (isConnected) {
-    router.push('/dashboard')
-    onClose()
-  }
+  useEffect(() => {
+    if (isConnected && isOpen) {
+      router.push("/dashboard")
+      onClose()
+    }
+  }, [isConnected, isOpen])
 
   if (!isOpen) return null
 
