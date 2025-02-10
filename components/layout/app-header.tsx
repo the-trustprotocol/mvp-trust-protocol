@@ -3,6 +3,7 @@ import { Button } from '../ui/button'
 import { Trophy, Wallet } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 
 export default function AppHeader() {
   return (
@@ -37,14 +38,7 @@ export default function AppHeader() {
             <Link href="/leaderboard">Leaderboard</Link>
             </span>
           </Button>
-          <Button 
-            variant="outline" 
-            size="sm"
-            className="gap-1 text-xs sm:gap-2 sm:text-sm"
-          >
-            <Wallet className="h-3 w-3 sm:h-4 sm:w-4" />
-            <span className="hidden sm:inline">Wallet</span>
-          </Button>
+          <ConnectButton/>
         </div>
       </div>
     </header>

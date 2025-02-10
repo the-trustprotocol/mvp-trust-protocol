@@ -17,6 +17,8 @@ import {
 import { BondModal } from "@/components/bond-modal"
 
 import { useState } from 'react'
+import { useAccount } from "wagmi"
+import AnimatedWalletConnect from "@/components/animated-connect-button"
 
 export default function Dashboard() {
 
@@ -74,6 +76,11 @@ export default function Dashboard() {
       status: 'Active'
     }
   ]
+  const { isConnected } = useAccount()
+
+  if(!isConnected) {
+    return <AnimatedWalletConnect/>
+  }
 
   return (
     <div className="min-h-screen bg-background bg-gradient-to-r from-[#cdffd8] to-[#94b9ff] ">

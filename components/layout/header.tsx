@@ -5,6 +5,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { Menu, X } from "lucide-react"
+import { ConnectButton } from "@rainbow-me/rainbowkit"
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -39,13 +40,16 @@ export default function Header() {
            Deck
           </Link> */}
         </nav>
+       
 
         <div className="flex items-center space-x-4">
-          <Button className="text-white">Open App</Button>
+          {/* <Button className="text-white">Open App</Button>
           <button onClick={toggleMenu} className="md:hidden">
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          </button> */}
+           <ConnectButton showBalance accountStatus={"address"}/>
         </div>
+
       </div>
 
       {/* Mobile Navigation */}
