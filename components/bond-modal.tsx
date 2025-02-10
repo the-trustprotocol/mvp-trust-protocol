@@ -94,7 +94,7 @@ export function BondModal({ isOpen, onClose, type }: BondModalProps) {
                   ) : (
                     <>
                       {/* ENS Domain Input */}
-                      <div className="space-y-2">
+                      {/* <div className="space-y-2">
                         <label className="text-sm font-medium text-primary-foreground">
                           ENS Domain or Address
                         </label>
@@ -105,10 +105,10 @@ export function BondModal({ isOpen, onClose, type }: BondModalProps) {
                           onChange={(e) => setAddress(e.target.value)}
                           className="bg-white bg-opacity-20 border-none text-primary-foreground placeholder:text-primary-foreground/50"
                         />
-                      </div>
+                      </div> */}
 
                       {/* Amount Input */}
-                      <div className="space-y-2">
+                      {/* <div className="space-y-2">
                         <label className="text-sm font-medium text-primary-foreground">
                           Amount
                         </label>
@@ -119,7 +119,7 @@ export function BondModal({ isOpen, onClose, type }: BondModalProps) {
                           onChange={(e) => setAmount(e.target.value)}
                           className="bg-white bg-opacity-20 border-none text-primary-foreground placeholder:text-primary-foreground/50"
                         />
-                      </div>
+                      </div> */}
 
                       {/* Slider */}
                       {type === 'withdraw' && (

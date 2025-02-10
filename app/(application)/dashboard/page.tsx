@@ -23,19 +23,52 @@ export default function Dashboard() {
   const [isBondModalOpen, setIsBondModalOpen] = useState(false)
   const [bondModalType, setBondModalType] = useState<'create' | 'withdraw' | 'break'>('create')
   // Mock data
+  // const bonds = [
+  //   {
+  //     user: '0xECD...02',
+  //     yourStake: '0.5 USDC',
+  //     counterpartyStake: '0.5 USDC',
+  //     type: 'Two-Way',
+  //     initiated: '2024-02-07',
+  //     status: 'Active'
+  //   },
+  //   {
+  //     user: '0x50D...15',
+  //     yourStake: '0.1 USD',
+  //     counterpartyStake: '0.0 USD',
+  //     type: 'One-Way',
+  //     initiated: '2024-02-07',
+  //     status: 'Active'
+  //   },{
+  //     user:'0xC0B...D4',
+  //     yourStake: '0.5 USD',
+  //     counterpartyStake: '0.0 USD',
+  //     type: 'One-Way',
+  //     initiated: '2024-02-07',
+  //     status: 'Active'
+  //   }
+  // ]
   const bonds = [
+    // {
+    //   user: '0xECD...02',
+    //   yourStake: '0.5 USDC',
+    //   counterpartyStake: '0.5 USDC',
+    //   type: 'Two-Way',
+    //   initiated: '2024-02-07',
+    //   status: 'Active'
+    // },
+    // {
+    //   user: '0x50D...15',
+    //   yourStake: '0.1 USD',
+    //   counterpartyStake: '0.0 USD',
+    //   type: 'One-Way',
+    //   initiated: '2024-02-07',
+    //   status: 'Active'
+    // },
     {
-      user: '0xECD...02',
-      yourStake: '1 USD',
+      user:'0x8b5...6f',
+      yourStake: '0 USD',
       counterpartyStake: '0.5 USD',
-      type: 'Two-Way',
-      initiated: '2024-02-07',
-      status: 'Active'
-    },
-    {
-      user: '0x50D...15',
-      yourStake: '1 USD',
-      counterpartyStake: '0.0 USD',
       type: 'One-Way',
       initiated: '2024-02-07',
       status: 'Active'
@@ -71,8 +104,8 @@ export default function Dashboard() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">$2.00</div>
-                <p className="text-xs text-muted-foreground mt-1">+200% from last month</p>
+                <div className="text-2xl font-bold">$0.5</div>
+                <p className="text-xs text-muted-foreground mt-1">+50% from last month</p>
               </CardContent>
             </Card>
 
@@ -88,7 +121,7 @@ export default function Dashboard() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">2</div>
+                <div className="text-2xl font-bold">1</div>
                 <p className="text-xs text-muted-foreground mt-1">0 broken bond</p>
               </CardContent>
             </Card>
