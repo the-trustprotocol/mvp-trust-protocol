@@ -26,7 +26,8 @@ import { OnBoardForm } from "@/components/dashboard/onboard-form"
 export default function Dashboard() {
 
   const [isBondModalOpen, setIsBondModalOpen] = useState(false)
-  const [bondModalType, setBondModalType] = useState<'create' | 'withdraw' | 'break'>('create')
+  const [bondModalType, setBondModalType] = useState<'create' | 'withdraw' | 'break' | 'stake'>('create')
+  const [selectedBondAddress, setSelectedBondAddress] = useState<string | null>(null)
   // Mock data
   // const bonds = [
   //   {
@@ -250,7 +251,7 @@ export default function Dashboard() {
                               className="gap-1 text-green-600 border-green-200 hover:bg-green-50"
                               onClick={() => {
                                 setIsBondModalOpen(true)
-                                setBondModalType('create')
+                                setBondModalType('stake')
                               }}
                             >
                               <PlusIcon className="w-4 h-4" />

@@ -4,6 +4,7 @@ import { REGISTRY_ABI } from "@/abi/registry";
 import { CONTRACT_ADDRESSES, DEFAULT_ASSET_ADDRESS_ERC20, NULL_ADDRESS } from "./constants";
 import { USER_FACTORY_ABI } from "@/abi/user-factory";
 import { USER_ABI } from "@/abi/user";
+import { BOND_ABI } from "@/abi/bond";
 
 export async function getUserWalletFromRegistry(user:`0x${string}`) : Promise<`0x${string}`> {
     const address =await readContract(config,{
@@ -13,6 +14,25 @@ export async function getUserWalletFromRegistry(user:`0x${string}`) : Promise<`0
         address:CONTRACT_ADDRESSES.REGISTRY
     })
     return address
+}
+export async function getOppositeBondUserAddress(bondAddress:`0x${string}`,user:`0x${string}`) : Promise<`0x${string}`> {
+    const userWallet = await getUserWalletFromRegistry(user)
+    const [_,user1,user2] =await readContract(config,{
+        abi:BOND_ABI,
+        functionName:"bond",
+        address:bondAddress
+    })
+    if(user1 === userWallet){
+        return user2
+    }
+    else if (
+        user2 === userWallet
+    ){
+        return user1
+    }
+    
+    return NULL_ADDRESS
+    
 }
 export async function getApprovalAddressForCreateBonds(user1:`0x${string}`,user2:`0x${string}`) : Promise<`0x${string}`> {
     const user1Wallet = await getUserWalletFromRegistry(user1)
