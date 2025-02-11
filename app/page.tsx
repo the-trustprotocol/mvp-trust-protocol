@@ -20,7 +20,7 @@ export default function Home() {
     <>
     <div className="min-h-screen bg-gradient-to-r from-[#cdffd8] to-[#94b9ff] z-10">
       <div className="fixed inset-0 z-0">
-        <ParticleBackground />
+        {/* <ParticleBackground />s */}
       </div>
       <Header />
       <div className="container mx-auto px-4 relative z-10">
