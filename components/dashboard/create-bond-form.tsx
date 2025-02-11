@@ -8,14 +8,14 @@ import Image from "next/image";
 import { toast } from "sonner";
 import { showTransactionToast } from "../showTransactionToast";
 import { useAccount, useReadContract } from "wagmi";
-import { erc20Abi, formatUnits, parseUnits } from "viem";
+import { createPublicClient, erc20Abi, formatUnits, http, parseUnits } from "viem";
 import {
   CONTRACT_ADDRESSES,
   DEFAULT_ASSET_ADDRESS_ERC20,
   NULL_ADDRESS,
 } from "@/lib/constants";
 import {
-  getEnsAddress,
+
   waitForTransactionReceipt,
   writeContract,
 } from "wagmi/actions";
@@ -24,6 +24,9 @@ import { USER_FACTORY_ABI } from "@/abi/user-factory";
 import { createBond } from "@/lib/calls";
 import { isAddress } from "viem";
 import { useUserWalletFromRegistry } from "@/hooks/use-protocol";
+import { getEnsAddress, getEnsName } from "viem/actions";
+import { mainnet } from "viem/chains";
+import { normalize } from 'viem/ens'
 export function CreateBondForm() {
   const { address } = useAccount();
 
@@ -61,10 +64,13 @@ export function CreateBondForm() {
         throw new Error("No wallet found")
       }
       if (!isAddress(formData.user2)) {
-        const returnEns = await getEnsAddress(config, {
-          name: formData.user2,
-          chainId:1 as any,
-        });
+        const client = createPublicClient({
+          chain: mainnet,
+          transport: http(),
+  })
+        const returnEns = await getEnsAddress(client, {
+          name: normalize(formData.user2),
+        })
         if (!returnEns) {
           toast.error("Invalid ENS name");
           setIsLoading(false);

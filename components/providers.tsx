@@ -10,15 +10,15 @@ import { BondLoadingModal } from './bond-loading-modal'
 const queryClient = new QueryClient()
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  const mounted = useMounted();
-  if (!mounted) return null;
-  const RainbowKitProvider = dynamic(
-    () =>
-      import("@rainbow-me/rainbowkit").then((mod) => mod.RainbowKitProvider),
-    {
-      loading: () => <BondLoadingModal />,
-    },
-  );
+  // const mounted = useMounted();
+  // if (!mounted) return null;
+  // const RainbowKitProvider = dynamic(
+  //   () =>
+  //     import("@rainbow-me/rainbowkit").then((mod) => mod.RainbowKitProvider),
+  //   {
+  //     loading: () => <BondLoadingModal />,
+  //   },
+  // );
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>

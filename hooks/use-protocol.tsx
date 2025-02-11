@@ -9,8 +9,24 @@ import { USER_FACTORY_ABI } from '@/abi/user-factory';
 import { USER_ABI } from '@/abi/user';
 import { config } from '@/lib/wagmi-config';
 import { CONTRACT_ADDRESSES, DEFAULT_ASSET_ADDRESS_ERC20, NULL_ADDRESS } from '@/lib/constants';
-import { createBond, getApprovalAddressForCreateBonds, getUserWalletFromRegistry } from '@/lib/calls';
+import { createBond, getApprovalAddressForCreateBonds, getUserDetails, getUserWalletFromRegistry, User } from '@/lib/calls';
 
+
+export const useResolveUserWallet = (userWallet: `0x${string}`) => { 
+  return useQuery<`0x${string}`>({
+    queryKey: ['resolveUserWallet', userWallet],
+    queryFn: async () => {
+      const address = await readContract(config, {
+        abi: USER_ABI,
+        functionName: 'owner',
+        address: userWallet,
+      });
+      return address as `0x${string}`;
+    },
+    enabled: Boolean(userWallet),
+
+ })
+}
 /**
  * Hook to fetch the user wallet address from the registry.
  *
@@ -21,6 +37,7 @@ export const useUserWalletFromRegistry = (user: `0x${string}`) => {
   return useQuery<`0x${string}`>({
     queryKey: ['userWallet', user],
     queryFn: async () => {
+      
       const address = await getUserWalletFromRegistry(user); 
       return address as `0x${string}`;
     },
@@ -79,3 +96,15 @@ export const useCreateBond = () => {
     },
   });
 };
+
+
+export const useUserDetails = (user: `0x${string}`) => {
+  return useQuery<User>({
+    queryKey: ['userDetails', user],
+    queryFn: async () => {
+      const userDetails = await getUserDetails(user); 
+      return userDetails;
+    },
+    enabled: Boolean(user),
+  });
+}
