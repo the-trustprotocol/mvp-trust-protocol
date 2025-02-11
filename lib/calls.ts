@@ -1,11 +1,11 @@
-import { readContract, writeContract } from "wagmi/actions";
+import { readContract, readContracts, writeContract } from "wagmi/actions";
 import { config } from "./wagmi-config";
 import { REGISTRY_ABI } from "@/abi/registry";
 import { CONTRACT_ADDRESSES, DEFAULT_ASSET_ADDRESS_ERC20, NULL_ADDRESS } from "./constants";
 import { USER_FACTORY_ABI } from "@/abi/user-factory";
 import { USER_ABI } from "@/abi/user";
 import { BOND_ABI } from "@/abi/bond";
-
+export async function 
 export async function getUserWalletFromRegistry(user:`0x${string}`) : Promise<`0x${string}`> {
     const address =await readContract(config,{
         abi:REGISTRY_ABI,
@@ -42,6 +42,24 @@ export async function getApprovalAddressForCreateBonds(user1:`0x${string}`,user2
     }
     return user1Wallet
     
+}
+
+export async function getUserDetails(user:`0x${string}`) {
+    const userWallet = await getUserWalletFromRegistry(user)
+    // const [] = await readContracts(config,{
+    //     contracts:[
+    //         {
+    //             abi:USER_ABI,
+    //             address:userWallet,
+    //             functionName:"user"
+    //         },
+    //         {
+    //             abi:USER_ABI,
+    //             address:userWallet,
+    //             functionName:"bond"
+    //         }
+    //     ]
+    // })
 }
 export async function createBond(user1:`0x${string}`,user2:`0x${string}`,initialAmount:bigint) : Promise<`0x${string}`> {
    const user1Wallet = await getUserWalletFromRegistry(user1)
