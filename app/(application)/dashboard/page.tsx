@@ -19,6 +19,9 @@ import { BondModal } from "@/components/bond-modal"
 import { useState } from 'react'
 import { useAccount } from "wagmi"
 import AnimatedWalletConnect from "@/components/animated-connect-button"
+import { useUserWalletFromRegistry } from "@/hooks/use-protocol"
+import { NULL_ADDRESS } from "@/lib/constants"
+import { OnBoardForm } from "@/components/dashboard/onboard-form"
 
 export default function Dashboard() {
 
@@ -76,10 +79,14 @@ export default function Dashboard() {
       status: 'Active'
     }
   ]
-  const { isConnected } = useAccount()
-
+  const { isConnected ,address} = useAccount()
+  const {data:userWallet} = useUserWalletFromRegistry(address ?? NULL_ADDRESS);
   if(!isConnected) {
     return <AnimatedWalletConnect/>
+  }
+  console.log({userWallet})
+  if(userWallet===NULL_ADDRESS){
+    return <OnBoardForm/>
   }
 
   return (
