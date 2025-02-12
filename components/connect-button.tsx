@@ -29,7 +29,7 @@ export function ConnectButton() {
       ) : (
         <Button
           onClick={handleConnect}
-          className="w-full py-6 text-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white transition-colors"
+          className="w-full py-6 text-lg font-semibold bg-primary hover:bg-blue-700 text-white transition-colors"
           size="lg"
         >
           Connect Wallet

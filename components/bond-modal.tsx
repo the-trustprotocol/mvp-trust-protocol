@@ -22,30 +22,21 @@ export interface BondModalProps {
   
 }
 
-export function BondModal({ isOpen, onClose, type ,bondAddress}: BondModalProps) {
-  const [address, setAddress] = useState('')
-  const [amount, setAmount] = useState('')
-  const [sliderValue, setSliderValue] = useState([50])
-  const [isLoading, setIsLoading] = useState(false) // Loading state
+export function BondModal({ isOpen, onClose, type, bondAddress }: BondModalProps) {
+  const [isLoading, setIsLoading] = useState(false); // Loading state
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   function handleModal(type: 'create' | 'withdraw' | 'break' | 'stake') {
     switch (type) {
       case 'create':
-        return <CreateBondForm/>
-       
+        return <CreateBondForm onClose={onClose} />;
       case 'withdraw':
-        // Withdraw bond
-        return <WithdrawBondForm  bondAddress={bondAddress ?? NULL_ADDRESS} />
-       
+        return <WithdrawBondForm bondAddress={bondAddress ?? NULL_ADDRESS} onClose={onClose} />;
       case 'break':
-        return <BreakBondForm bondAddress={bondAddress ?? NULL_ADDRESS} />
-  
+        return <BreakBondForm bondAddress={bondAddress ?? NULL_ADDRESS} onClose={onClose} />;
       case 'stake':
-        
-        return <StakeBondForm bondAddress={bondAddress ?? NULL_ADDRESS} />
-        
+        return <StakeBondForm bondAddress={bondAddress ?? NULL_ADDRESS} onClose={onClose} />;
     }
   }
 
@@ -74,14 +65,11 @@ export function BondModal({ isOpen, onClose, type ,bondAddress}: BondModalProps)
                   <X size={24} />
                 </button>
                 {handleModal(type)}
-      
-
-                
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
