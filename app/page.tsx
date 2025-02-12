@@ -10,6 +10,8 @@ import { ArrowRight } from "lucide-react";
 import { WalletModal } from "@/components/wallet-modal";
 import { useState } from "react";
 import Header from "@/components/layout/header";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import Link from "next/link";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,7 +20,7 @@ export default function Home() {
     <>
     <div className="min-h-screen bg-gradient-to-r from-[#cdffd8] to-[#94b9ff] z-10">
       <div className="fixed inset-0 z-0">
-        <ParticleBackground />
+        {/* <ParticleBackground />s */}
       </div>
       <Header />
       <div className="container mx-auto px-4 relative z-10">
@@ -39,26 +41,12 @@ export default function Home() {
             Trust protocol is an open-source layer zero for trust.
           </p>
           <div className="flex items-center w-full justify-center space-x-4">
-            {/* <Button
-              type="submit"
-              className="h-12 rounded-lg text-base whitespace-nowrap w-full sm:w-auto text-white"
-            >
-              Get Started <ArrowRight className="ml-2 h-4 w-4" />
-            </Button> */}
+          
 
-            <Button
-              type="submit"
-              onClick={() => setIsModalOpen(true)}
-              className="h-12 px-6 text-base whitespace-nowrap w-full sm:w-auto text-white rounded-lg"
-            >
-              Get Started <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-            {/* <Button
-              size="lg"
-              className="text-lg text-white bg-primary-foreground"
-            >
-              Whitepaper
-            </Button> */}
+          <Button asChild>
+             <Link href="/dashboard" className="text-white">Goto App</Link>
+           </Button>
+           
           </div>
         </div>
 
@@ -68,11 +56,7 @@ export default function Home() {
         </div>
         <Footer />
       </div>
-      
-      <WalletModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-      />
+    
     </>
   );
 }

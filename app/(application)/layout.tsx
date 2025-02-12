@@ -12,12 +12,7 @@ export default async function DashBoardlayout({
     <div className="h-dvh w-full">
      
      <AppHeader />
-    
-
-     
-        {children}
-    
-      {/* </div> */}
+        {children} 
     </div>
   )
 }
