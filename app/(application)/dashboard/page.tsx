@@ -83,22 +83,23 @@ export default function Dashboard() {
         {/* Metrics */}
         <div className="grid gap-4 md:grid-cols-3">
           <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader className="pb-2 flex items-center gap-2">
-              <Coins className="w-5 h-5 text-primary" />
-              <CardTitle className="text-sm font-medium text-muted-foreground">
-                Total Value Locked
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                ${!userDetailsLoading && userDetails?.totalAmount !== undefined && userDetails?.totalWithdrawnAmount !== undefined
-                  ? formateDefaultAssetAmount(BigInt(userDetails.totalAmount) - BigInt(userDetails.totalWithdrawnAmount) )
-                  : 'N/A'}
-              </div>
-            </CardContent>
+              <CardHeader className="pb-2">
+                <div className="flex items-center gap-2">
+                  <div className="p-2 rounded-full bg-primary/10">
+                    <CurrencyIcon className="w-5 h-5 text-primary" />
+                  </div>
+                  <CardTitle className="text-sm font-medium text-muted-foreground">
+                    Total Value Locked
+                  </CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">${userDetails?.totalAmount !== undefined && userDetails?.totalWithdrawnAmount !== undefined ? formateDefaultAssetAmount(BigInt(userDetails.totalAmount) - BigInt(userDetails.totalWithdrawnAmount)) : 'N/A'}</div>
+                <p className="text-xs text-muted-foreground mt-1">Total Amount LifeTime ${userDetails?.totalAmount !== undefined ? formateDefaultAssetAmount(BigInt(userDetails.totalAmount)) : 'N/A'}</p>
+              </CardContent>
           </Card>
 
-          <Card className="hover:shadow-lg transition-shadow">
+          {/* <Card className="hover:shadow-lg transition-shadow">
             <CardHeader className="pb-2 flex items-center gap-2">
               <HandshakeIcon className="w-5 h-5 text-primary" />
               <CardTitle className="text-sm font-medium text-muted-foreground">Active Bonds</CardTitle>
@@ -106,9 +107,25 @@ export default function Dashboard() {
             <CardContent>
               <div className="text-2xl font-bold">{!userDetailsLoading ? userDetails?.totalActiveBonds ?? 0 : 'Loading...'}</div>
             </CardContent>
-          </Card>
-
+          </Card> */}
           <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader className="pb-2">
+                <div className="flex items-center gap-2">
+                  <div className="p-2 rounded-full bg-primary/10">
+                    <HandshakeIcon className="w-5 h-5 text-primary" />
+                  </div>
+                  <CardTitle className="text-sm font-medium text-muted-foreground">
+                    Active Bonds
+                  </CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{userDetails?.totalActiveBonds ?? 0}</div>
+                <p className="text-xs text-muted-foreground mt-1">{userDetails?.totalBrokenBonds} broken bonds, {userDetails?.totalWithdrawnBonds} withdrawn bonds</p>
+              </CardContent>
+            </Card>
+
+          {/* <Card className="hover:shadow-lg transition-shadow">
             <CardHeader className="pb-2 flex items-center gap-2">
               <StarIcon className="w-5 h-5 text-primary" />
               <CardTitle className="text-sm font-medium text-muted-foreground">Reputation Score</CardTitle>
@@ -117,11 +134,31 @@ export default function Dashboard() {
               <div className="text-2xl font-bold">Coming Soon</div>
             </CardContent>
           </Card>
-        </div>
+        */}
+
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader className="pb-2">
+              <div className="flex items-center gap-2">
+                <div className="p-2 rounded-full bg-primary/10">
+                  <StarIcon className="w-5 h-5 text-primary" />
+                </div>
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  Reputation Score
+                </CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">Coming Soon</div>
+            </CardContent>
+          </Card>
+        </div> 
 
         {/* Bond Creation Section */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-6 bg-white/60 backdrop-blur-sm rounded-xl shadow-lg">
-          <h3 className="text-lg font-semibold text-gray-900">Bond Management</h3>
+            <div className="space-y-2 text-center sm:text-left">
+              <h3 className="text-lg font-semibold text-gray-900">Bond Management</h3>
+              <p className="text-sm text-gray-600">Click Create Bond And Start Your Trust Relationships</p>
+            </div>
           <Button 
               onClick={() => {
                 setIsBondModalOpen(true)
