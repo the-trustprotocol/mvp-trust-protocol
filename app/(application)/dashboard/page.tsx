@@ -1,7 +1,11 @@
 'use client'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+
+import { useState, useEffect } from "react";
+import { useAccount } from "wagmi";
+import { AnimatePresence, motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   PlusIcon,
   MinusIcon,
@@ -12,20 +16,16 @@ import {
   WalletIcon,
   SettingsIcon,
   LinkIcon,
-  UnlinkIcon
+  UnlinkIcon,
+  Coins
 } from "lucide-react"
-import { BondModal } from "@/components/bond-modal"
-import { WithdrawBondForm } from "@/components/dashboard/withdraw-form"
 
-
-
-import { useState } from 'react'
-import { useAccount } from "wagmi"
-import AnimatedWalletConnect from "@/components/animated-connect-button"
-import { useResolveUserWallet, useUserDetails, useUserWalletFromRegistry } from "@/hooks/use-protocol"
-import { NULL_ADDRESS } from "@/lib/constants"
-import { OnBoardForm } from "@/components/dashboard/onboard-form"
-import { formateDefaultAssetAmount } from "@/lib/utils"
+import { useResolveUserWallet, useUserDetails, useUserWalletFromRegistry } from "@/hooks/use-protocol";
+import { NULL_ADDRESS } from "@/lib/constants";
+import { formateDefaultAssetAmount } from "@/lib/utils";
+import { OnBoardForm } from "@/components/dashboard/onboard-form";
+import AnimatedWalletConnect from "@/components/animated-connect-button";
+import { BondModal } from "@/components/bond-modal";
 
 
 function UserResolver({address}:{address:`0x${string}`}) {
@@ -36,27 +36,39 @@ function UserResolver({address}:{address:`0x${string}`}) {
   return (<span>{userWallet ?? NULL_ADDRESS}</span>)
 
 }
-export default function Dashboard() {
 
+export default function Dashboard() {
+  const { isConnected, address, status: accountStatus } = useAccount();
+  const { data: userWallet, isLoading: walletLoading } = useUserWalletFromRegistry(address ?? NULL_ADDRESS);
+  const { data: userDetails, isLoading: userDetailsLoading } = useUserDetails(address ?? NULL_ADDRESS);
+  const [bondAddress, setBondAddress] = useState<string | undefined>(undefined)
   const [isBondModalOpen, setIsBondModalOpen] = useState(false)
   const [bondModalType, setBondModalType] = useState<'create' | 'withdraw' | 'break' | 'stake'>('create')
-  const { isConnected ,address} = useAccount()
-  const {data:userWallet} = useUserWalletFromRegistry(address ?? NULL_ADDRESS);
-  console.log({userWallet})
 
-  const [bondAddress, setBondAddress] = useState<string | undefined>(undefined)
+  // Modal States
+  const [showOnboardModal, setShowOnboardModal] = useState(false);
+  const [showConnectModal, setShowConnectModal] = useState(false);
 
-  const {data:userDetails} = useUserDetails(address ?? NULL_ADDRESS)
-  console.log({userDetails})
-  if(!isConnected) {
-    return <AnimatedWalletConnect/>
-  }
+  // UseEffect to open OnBoard modal if userWallet is NULL
+  useEffect(() => {
+    if (!walletLoading && (userWallet === NULL_ADDRESS || userWallet === undefined)) {
+      setShowOnboardModal(true);
+    } else {
+      setShowOnboardModal(false);
+    }
+  }, [userWallet, walletLoading]);
 
-  if(userWallet===NULL_ADDRESS || userWallet===undefined){
-    return <OnBoardForm/>
-  }
+  // UseEffect to handle Wallet Connect modal
+  useEffect(() => {
+    if (accountStatus !== 'connected' && !isConnected) {
+      setShowConnectModal(true);
+    } else {
+      setShowConnectModal(false);
+    }
+  }, [isConnected, accountStatus]);
+
   return (
-    <div className="min-h-screen bg-background bg-gradient-to-r from-[#cdffd8] to-[#94b9ff] ">
+    <div className="min-h-screen bg-gradient-to-r from-[#cdffd8] to-[#94b9ff]">
       <main className="container mx-auto p-4 flex flex-col gap-8">
         {/* Header */}
         <div className="flex flex-col gap-2">
@@ -68,74 +80,49 @@ export default function Dashboard() {
           </p>
         </div>
 
-        {/* Metrics and Actions Container */}
-        <div className="flex flex-col gap-8 flex-shrink-0">
-          {/* Metrics Grid */}
-          <div className="grid gap-4 md:grid-cols-3">
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader className="pb-2">
-                <div className="flex items-center gap-2">
-                  <div className="p-2 rounded-full bg-primary/10">
-                    <CurrencyIcon className="w-5 h-5 text-primary" />
-                  </div>
-                  <CardTitle className="text-sm font-medium text-muted-foreground">
-                    Total Value Locked
-                  </CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">${userDetails?.totalAmount !== undefined && userDetails?.totalWithdrawnAmount !== undefined ? formateDefaultAssetAmount(BigInt(userDetails.totalAmount) - BigInt(userDetails.totalWithdrawnAmount)) : 'N/A'}</div>
-                <p className="text-xs text-muted-foreground mt-1">Total Amount LifeTime ${userDetails?.totalAmount !== undefined ? formateDefaultAssetAmount(BigInt(userDetails.totalAmount)) : 'N/A'}</p>
-              </CardContent>
-            </Card>
+        {/* Metrics */}
+        <div className="grid gap-4 md:grid-cols-3">
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader className="pb-2 flex items-center gap-2">
+              <Coins className="w-5 h-5 text-primary" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                Total Value Locked
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                ${!userDetailsLoading && userDetails?.totalAmount !== undefined && userDetails?.totalWithdrawnAmount !== undefined
+                  ? formateDefaultAssetAmount(BigInt(userDetails.totalAmount) - BigInt(userDetails.totalWithdrawnAmount) )
+                  : 'N/A'}
+              </div>
+            </CardContent>
+          </Card>
 
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader className="pb-2">
-                <div className="flex items-center gap-2">
-                  <div className="p-2 rounded-full bg-primary/10">
-                    <HandshakeIcon className="w-5 h-5 text-primary" />
-                  </div>
-                  <CardTitle className="text-sm font-medium text-muted-foreground">
-                    Active Bonds
-                  </CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{userDetails?.totalActiveBonds ?? 0}</div>
-                <p className="text-xs text-muted-foreground mt-1">{userDetails?.totalBrokenBonds} broken bonds, {userDetails?.totalWithdrawnBonds} withdrawn bonds</p>
-              </CardContent>
-            </Card>
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader className="pb-2 flex items-center gap-2">
+              <HandshakeIcon className="w-5 h-5 text-primary" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Active Bonds</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{!userDetailsLoading ? userDetails?.totalActiveBonds ?? 0 : 'Loading...'}</div>
+            </CardContent>
+          </Card>
 
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader className="pb-2">
-                <div className="flex items-center gap-2">
-                  <div className="p-2 rounded-full bg-primary/10">
-                    <StarIcon className="w-5 h-5 text-primary" />
-                  </div>
-                  <CardTitle className="text-sm font-medium text-muted-foreground">
-                    Reputation Score
-                  </CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">Coming Soon</div>
-               
-              </CardContent>
-            </Card>
-          </div>
-
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader className="pb-2 flex items-center gap-2">
+              <StarIcon className="w-5 h-5 text-primary" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Reputation Score</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">Coming Soon</div>
+            </CardContent>
+          </Card>
         </div>
 
-          
-          {/* Bond Creation Section */}
-        <div className="grid gap-4">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-6 bg-white/60 backdrop-blur-sm rounded-xl shadow-lg">
-            <div className="space-y-2 text-center sm:text-left">
-              <h3 className="text-lg font-semibold text-gray-900">Bond Management</h3>
-              <p className="text-sm text-gray-600">Initiate new trust relationships</p>
-            </div>
-            
-            <Button 
+        {/* Bond Creation Section */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-6 bg-white/60 backdrop-blur-sm rounded-xl shadow-lg">
+          <h3 className="text-lg font-semibold text-gray-900">Bond Management</h3>
+          <Button 
               onClick={() => {
                 setIsBondModalOpen(true)
                 setBondModalType('create')
@@ -145,7 +132,8 @@ export default function Dashboard() {
               <LinkIcon className="mr-2 h-4 w-4" />
               Create New Bond
             </Button>
-          </div>
+
+
         </div>
 
         <div className="mt-8 flex-1 overflow-hidden min-h-[400px]">
@@ -262,16 +250,33 @@ export default function Dashboard() {
             </CardContent>
           </Card>
         </div>
-
-       
-      
       </main>
+
+      {/* Modals */}
+      <AnimatePresence>
+        {showOnboardModal && (
+          <OnBoardForm
+            key="onboard-modal"
+            isOpen={showOnboardModal}
+            onClose={() => setShowOnboardModal(false)}
+          />
+        )}
+
+        {showConnectModal && (
+          <AnimatedWalletConnect
+            key="wallet-connect-modal"
+            isOpen={showConnectModal}
+            onClose={() => setShowConnectModal(false)}
+          />
+        )}
+
       <BondModal
         isOpen={isBondModalOpen}
         onClose={() => setIsBondModalOpen(false)}
         type={bondModalType}
         bondAddress={bondAddress}
       />
+      </AnimatePresence>
     </div>
-  )
+  );
 }

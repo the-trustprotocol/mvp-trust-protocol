@@ -25,7 +25,14 @@ import { createBond } from "@/lib/calls";
 import { isAddress } from "viem";
 import { USER_ABI } from "@/abi/user";
 import { useUserWalletFromRegistry } from "@/hooks/use-protocol";
-export function WithdrawBondForm({bondAddress}:{bondAddress:string}) {
+
+export interface WithdrawBondFormProps {
+  onClose : () => void 
+  bondAddress: string
+}
+
+
+export function WithdrawBondForm({bondAddress, onClose}:WithdrawBondFormProps ) {
   const { address } = useAccount();
 
   const [formData, setFormData] = useState<{
@@ -75,11 +82,15 @@ export function WithdrawBondForm({bondAddress}:{bondAddress:string}) {
         hash: hash,
       });
       showTransactionToast(hash)
+      onClose()
     } catch (error) {
       toast.error((error as Error).message);
       console.error(error);
     }
-    setIsLoading(false);
+    finally {
+      setIsLoading(false);
+    }
+    
   };
 
   return (

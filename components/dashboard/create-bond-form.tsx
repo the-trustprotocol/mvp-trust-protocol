@@ -27,7 +27,7 @@ import { useUserWalletFromRegistry } from "@/hooks/use-protocol";
 import { getEnsAddress, getEnsName } from "viem/actions";
 import { mainnet } from "viem/chains";
 import { normalize } from 'viem/ens'
-export function CreateBondForm() {
+export function CreateBondForm({ onClose }: { onClose: () => void }) {
   const { address } = useAccount();
 
   const [formData, setFormData] = useState<{
@@ -117,11 +117,13 @@ export function CreateBondForm() {
         hash: hash,
       });
       showTransactionToast(hash)
+      onClose();
     } catch (error) {
       toast.error((error as Error).message);
       console.error(error);
+    }finally{
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   return (
