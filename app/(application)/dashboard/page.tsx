@@ -26,6 +26,7 @@ import { formateDefaultAssetAmount } from "@/lib/utils";
 import { OnBoardForm } from "@/components/dashboard/onboard-form";
 import AnimatedWalletConnect from "@/components/animated-connect-button";
 import { BondModal } from "@/components/bond-modal";
+import truncateEthAddress from "@/lib/truncateAddress"
 
 
 function UserResolver({address}:{address:`0x${string}`}) {
@@ -33,7 +34,7 @@ function UserResolver({address}:{address:`0x${string}`}) {
   if(isLoading) {
     return <span>Loading...</span>
   }
-  return (<span>{userWallet ?? NULL_ADDRESS}</span>)
+  return (<span>{truncateEthAddress(userWallet ?? NULL_ADDRESS)}</span>)
 
 }
 
@@ -94,7 +95,7 @@ export default function Dashboard() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">${userDetails?.totalAmount !== undefined && userDetails?.totalWithdrawnAmount !== undefined ? formateDefaultAssetAmount(BigInt(userDetails.totalAmount) - BigInt(userDetails.totalWithdrawnAmount)) : 'N/A'}</div>
+                <div className="text-2xl font-bold">${userDetails?.totalAmount !== undefined && userDetails?.totalWithdrawnAmount !== undefined ? formateDefaultAssetAmount(BigInt(userDetails.totalAmount) - (BigInt(userDetails.totalWithdrawnAmount)) - BigInt(userDetails.totalBrokenAmount)): 'N/A'}</div>
                 <p className="text-xs text-muted-foreground mt-1">Total Amount LifeTime ${userDetails?.totalAmount !== undefined ? formateDefaultAssetAmount(BigInt(userDetails.totalAmount)) : 'N/A'}</p>
               </CardContent>
           </Card>
