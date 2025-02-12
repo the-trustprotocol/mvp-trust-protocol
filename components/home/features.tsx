@@ -14,7 +14,13 @@ const features = [
   { title: "Agnostic & Interoperable", description: "Works seamlessly across various blockchain ecosystems.", icon: Layers },
 ];
 
-const FeatureCard = ({ feature, index }) => {
+interface Feature {
+  title: string;
+  description: string;
+  icon: React.ComponentType;
+}
+
+const FeatureCard = ({ feature, index }: { feature: Feature; index: number }) => {
   const [isHovered, setIsHovered] = useState(false);
   const controls = useAnimation();
 
@@ -52,7 +58,7 @@ const FeatureCard = ({ feature, index }) => {
               whileHover={{ rotate: 360, scale: 1.1 }}
               transition={{ duration: 0.5 }}
             >
-              <feature.icon className="w-6 h-6 text-primary" />
+              <feature.icon />
             </motion.div>
             <span className="bg-clip-text text-primary">{feature.title}</span>
           </CardTitle>
