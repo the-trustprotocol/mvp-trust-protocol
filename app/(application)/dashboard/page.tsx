@@ -315,6 +315,7 @@ export default function Dashboard() {
             onClose={() => setShowConnectModal(false)}
           />
         )}
+        
 
       <BondModal
         isOpen={isBondModalOpen}
