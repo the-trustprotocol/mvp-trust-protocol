@@ -33,17 +33,13 @@ const AnimatedWalletConnect = ({ isOpen, onClose }: { isOpen: boolean; onClose: 
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       >
-        <motion.div className="relative w-full max-w-lg bg-white rounded-lg shadow-lg p-6">
-          {/* <button className="absolute top-4 right-4" onClick={onClose}>
-            <X className="w-5 h-5 text-gray-600 hover:text-gray-800" />
-          </button> */}
-
-          <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-xl">
-            <div className="p-8 text-center w-full">
+        <motion.div className="relative w-full max-w-lg bg-gradient-to-r from-[#cdffd8] to-[#94b9ff] rounded-lg shadow-lg p-6">
+            <div className="p-8 text-center w-full flex flex-col items-center justify-center">
               <h1 className="text-4xl font-bold text-gray-800 mb-8">Connect Wallet</h1>
-              <ConnectButton label="Connect Now" />
+              <div className="flex justify-center">
+                <ConnectButton label="Connect Now" />
+              </div>
             </div>
-          </Card>
         </motion.div>
       </motion.div>
     </AnimatePresence>
