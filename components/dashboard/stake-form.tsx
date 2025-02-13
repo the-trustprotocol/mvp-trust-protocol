@@ -12,7 +12,8 @@ import { erc20Abi, formatUnits, parseUnits } from "viem";
 import {
   CONTRACT_ADDRESSES,
   NULL_ADDRESS,
-  CHAIN_ID
+  CHAIN_ID,
+  ValidChainType
 } from "@/lib/constants";
 import {
   getEnsAddress,
@@ -56,7 +57,7 @@ export function StakeBondForm({bondAddress, onClose}:StakeBondFormProps ){
 
   const { data: approvedAmount } = useReadContract({
     abi: erc20Abi,
-    address: CONTRACT_ADDRESSES[CHAIN_ID].DEFAULT_ASSET_ADDRESS_ERC20 as `0x${string}`,
+    address: CONTRACT_ADDRESSES[chainId as ValidChainType].DEFAULT_ASSET_ADDRESS_ERC20 as `0x${string}`,
     functionName: "allowance",
     args: [address ?? NULL_ADDRESS, CONTRACT_ADDRESSES[chainId as keyof typeof  CONTRACT_ADDRESSES ].USER_FACTORY],
   });
@@ -106,7 +107,7 @@ export function StakeBondForm({bondAddress, onClose}:StakeBondFormProps ){
       if (approvedAmountFormatted < inputAmountParsed) {
         const approvalHash = await writeContract(config, {
           abi: erc20Abi,
-          address: CONTRACT_ADDRESSES[CHAIN_ID].DEFAULT_ASSET_ADDRESS_ERC20 as `0x${string}`,
+          address: CONTRACT_ADDRESSES[chainId as ValidChainType].DEFAULT_ASSET_ADDRESS_ERC20 as `0x${string}`,
           functionName: "approve",
           args: [
             userWallet,

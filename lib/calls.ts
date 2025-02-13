@@ -40,8 +40,6 @@ export async function getUserWalletFromRegistry(user:`0x${string}`) : Promise<`0
         args:[user],
         address:CONTRACT_ADDRESSES[chainId as ValidChainType].REGISTRY
     })
-    
-    console.log("address",address)
     return address
 }
 export async function getOppositeBondUserAddress(bondAddress:`0x${string}`,user:`0x${string}`) : Promise<`0x${string}`> {

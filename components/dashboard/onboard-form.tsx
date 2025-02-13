@@ -29,7 +29,7 @@ export function OnBoardForm({ isOpen, onClose }: { isOpen: boolean; onClose: () 
 
   const { data: approvedAmount } = useReadContract({
     abi: erc20Abi,
-    address: CONTRACT_ADDRESSES[CHAIN_ID].DEFAULT_ASSET_ADDRESS_ERC20 as `0x${string}`,
+    address: CONTRACT_ADDRESSES[chainId as ValidChainType].DEFAULT_ASSET_ADDRESS_ERC20 as `0x${string}`,
     functionName: "allowance",
     args: [address ?? NULL_ADDRESS, CONTRACT_ADDRESSES[CHAIN_ID].USER_FACTORY],
   });
@@ -46,7 +46,8 @@ export function OnBoardForm({ isOpen, onClose }: { isOpen: boolean; onClose: () 
         throw new Error("No address found");
       }
       const chainId = getChainId(config)
-
+      console.log("chainIasdfasdfdd",chainId)
+      console.log("USR FACTORY", CONTRACT_ADDRESSES[chainId as ValidChainType]?.USER_FACTORY)
       if (!createUser) {
        
         const hash = await writeContract(config, {

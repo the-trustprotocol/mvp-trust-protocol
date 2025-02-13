@@ -13,6 +13,7 @@ import {
   CONTRACT_ADDRESSES,
   CHAIN_ID,
   NULL_ADDRESS,
+  ValidChainType,
 } from "@/lib/constants";
 import {
 
@@ -46,9 +47,9 @@ export function CreateBondForm({ onClose }: { onClose: () => void }) {
 
   const { data: approvedAmount } = useReadContract({
     abi: erc20Abi,
-    address: CONTRACT_ADDRESSES[CHAIN_ID].DEFAULT_ASSET_ADDRESS_ERC20 as `0x${string}`,
+    address: CONTRACT_ADDRESSES[chainId as ValidChainType].DEFAULT_ASSET_ADDRESS_ERC20 as `0x${string}`,
     functionName: "allowance",
-    args: [address ?? NULL_ADDRESS, CONTRACT_ADDRESSES[CHAIN_ID].USER_FACTORY_SETTINGS],
+    args: [address ?? NULL_ADDRESS, CONTRACT_ADDRESSES[chainId as ValidChainType].USER_FACTORY_SETTINGS],
   });
   const {data:userWallet} = useUserWalletFromRegistry(address ?? NULL_ADDRESS)
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,7 +100,7 @@ export function CreateBondForm({ onClose }: { onClose: () => void }) {
       if (approvedAmountFormatted < inputAmountParsed) {
         const approvalHash = await writeContract(config, {
           abi: erc20Abi,
-          address: CONTRACT_ADDRESSES[CHAIN_ID].DEFAULT_ASSET_ADDRESS_ERC20 as `0x${string}`,
+          address: CONTRACT_ADDRESSES[chainId as ValidChainType].DEFAULT_ASSET_ADDRESS_ERC20 as `0x${string}`,
           functionName: "approve",
           args: [
             userWallet,
