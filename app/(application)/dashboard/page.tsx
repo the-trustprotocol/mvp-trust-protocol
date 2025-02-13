@@ -21,7 +21,7 @@ import {
 } from "lucide-react"
 
 import { useResolveUserWallet, useUserDetails, useUserWalletFromRegistry } from "@/hooks/use-protocol";
-import { NULL_ADDRESS } from "@/lib/constants";
+import { CHAIN_ID, NULL_ADDRESS } from "@/lib/constants";
 import { formateDefaultAssetAmount } from "@/lib/utils";
 import { OnBoardForm } from "@/components/dashboard/onboard-form";
 import AnimatedWalletConnect from "@/components/animated-connect-button";
@@ -45,7 +45,7 @@ export default function Dashboard() {
   const [bondAddress, setBondAddress] = useState<string | undefined>(undefined)
   const [isBondModalOpen, setIsBondModalOpen] = useState(false)
   const [bondModalType, setBondModalType] = useState<'create' | 'withdraw' | 'break' | 'stake'>('create')
-
+  console.log({CHAIN_ID})
   // Modal States
   const [showOnboardModal, setShowOnboardModal] = useState(false);
   const [showConnectModal, setShowConnectModal] = useState(false);

@@ -11,7 +11,7 @@ import { useAccount, useReadContract } from "wagmi";
 import { createPublicClient, erc20Abi, formatUnits, http, parseUnits } from "viem";
 import {
   CONTRACT_ADDRESSES,
-  DEFAULT_ASSET_ADDRESS_ERC20,
+  CHAIN_ID,
   NULL_ADDRESS,
 } from "@/lib/constants";
 import {
@@ -27,6 +27,9 @@ import { useUserWalletFromRegistry } from "@/hooks/use-protocol";
 import { getEnsAddress, getEnsName } from "viem/actions";
 import { mainnet } from "viem/chains";
 import { normalize } from 'viem/ens'
+import { useChainId } from 'wagmi';
+
+
 export function CreateBondForm({ onClose }: { onClose: () => void }) {
   const { address } = useAccount();
 
@@ -39,12 +42,13 @@ export function CreateBondForm({ onClose }: { onClose: () => void }) {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const chainId = useChainId();
 
   const { data: approvedAmount } = useReadContract({
     abi: erc20Abi,
-    address: DEFAULT_ASSET_ADDRESS_ERC20,
+    address: CONTRACT_ADDRESSES[CHAIN_ID].DEFAULT_ASSET_ADDRESS_ERC20 as `0x${string}`,
     functionName: "allowance",
-    args: [address ?? NULL_ADDRESS, CONTRACT_ADDRESSES.USER_FACTORY],
+    args: [address ?? NULL_ADDRESS, CONTRACT_ADDRESSES[CHAIN_ID].USER_FACTORY_SETTINGS],
   });
   const {data:userWallet} = useUserWalletFromRegistry(address ?? NULL_ADDRESS)
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,7 +99,7 @@ export function CreateBondForm({ onClose }: { onClose: () => void }) {
       if (approvedAmountFormatted < inputAmountParsed) {
         const approvalHash = await writeContract(config, {
           abi: erc20Abi,
-          address: DEFAULT_ASSET_ADDRESS_ERC20,
+          address: CONTRACT_ADDRESSES[CHAIN_ID].DEFAULT_ASSET_ADDRESS_ERC20 as `0x${string}`,
           functionName: "approve",
           args: [
             userWallet,

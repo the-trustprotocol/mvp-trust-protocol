@@ -11,7 +11,6 @@ import { useAccount, useReadContract } from "wagmi";
 import { erc20Abi, formatUnits, parseUnits } from "viem";
 import {
   CONTRACT_ADDRESSES,
-  DEFAULT_ASSET_ADDRESS_ERC20,
   NULL_ADDRESS,
 } from "@/lib/constants";
 import {

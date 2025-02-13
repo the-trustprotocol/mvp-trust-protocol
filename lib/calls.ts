@@ -1,11 +1,12 @@
-import { readContract, readContracts, writeContract } from "wagmi/actions";
+import { getChainId, readContract, readContracts, writeContract } from "wagmi/actions";
 import { config } from "./wagmi-config";
 import { REGISTRY_ABI } from "@/abi/registry";
-import { CONTRACT_ADDRESSES, DEFAULT_ASSET_ADDRESS_ERC20, NULL_ADDRESS } from "./constants";
+import {  CONTRACT_ADDRESSES, NULL_ADDRESS, ValidChainType } from "./constants";
 import { USER_FACTORY_ABI } from "@/abi/user-factory";
 import { USER_ABI } from "@/abi/user";
 import { BOND_ABI } from "@/abi/bond";
 import { groupBy } from "./utils";
+import { useChainId } from "wagmi";
 export type UserBond = {
     user1:`0x${string}`,
     user2:`0x${string}`,
@@ -31,13 +32,15 @@ export type User = {
 }
 // export async function 
 export async function getUserWalletFromRegistry(user:`0x${string}`) : Promise<`0x${string}`> {
-   
-    const address =await readContract(config,{
+    const chainId = getChainId(config)
+    console.log("chainId",chainId)
+    const address = await readContract(config,{
         abi:REGISTRY_ABI,
         functionName:"addressToUserContracts",
         args:[user],
-        address:CONTRACT_ADDRESSES.REGISTRY
+        address:CONTRACT_ADDRESSES[chainId as ValidChainType].REGISTRY
     })
+    alert(address)
     console.log("address",address)
     return address
 }
@@ -61,10 +64,11 @@ export async function getOppositeBondUserAddress(bondAddress:`0x${string}`,user:
     
 }
 export async function getApprovalAddressForCreateBonds(user1:`0x${string}`,user2:`0x${string}`) : Promise<`0x${string}`> {
+    const chainId = getChainId(config)
     const user1Wallet = await getUserWalletFromRegistry(user1)
     const user2Wallet = await getUserWalletFromRegistry(user2)
     if(user1Wallet === NULL_ADDRESS){
-        return CONTRACT_ADDRESSES.USER_FACTORY; 
+        return CONTRACT_ADDRESSES[chainId as ValidChainType].USER_FACTORY; 
     }
     return user1Wallet
     
@@ -182,15 +186,16 @@ export async function getUserDetails(user:`0x${string}`) {
     return userData;
 }
 export async function createBond(user1:`0x${string}`,user2:`0x${string}`,initialAmount:bigint) : Promise<`0x${string}`> {
+   const chainId = getChainId(config)
    const user1Wallet = await getUserWalletFromRegistry(user1)
    const user2Wallet = await getUserWalletFromRegistry(user2)
    let hash:`0x${string}` | undefined;
    if(user1Wallet === NULL_ADDRESS){
     hash =await writeContract(config,{
         abi:USER_FACTORY_ABI,
-        address:CONTRACT_ADDRESSES.USER_FACTORY,
+        address:CONTRACT_ADDRESSES[chainId as ValidChainType].USER_FACTORY,
         functionName:'createUserWithBond',
-        args:[user1,user2,initialAmount,CONTRACT_ADDRESSES.BOND_FACTORY_TOKEN,CONTRACT_ADDRESSES.YIELD_PROVIDER_SERVICE]
+        args:[user1,user2,initialAmount,CONTRACT_ADDRESSES[chainId as ValidChainType].BOND_FACTORY_TOKEN,CONTRACT_ADDRESSES[chainId as ValidChainType].YIELD_PROVIDER_SERVICE]
     })
    }
    if(user1Wallet !== NULL_ADDRESS){
@@ -199,7 +204,7 @@ export async function createBond(user1:`0x${string}`,user2:`0x${string}`,initial
         abi:USER_ABI,
         address:user1Wallet,
         functionName:'createBond',
-        args:[user2,DEFAULT_ASSET_ADDRESS_ERC20,CONTRACT_ADDRESSES.YIELD_PROVIDER_SERVICE,initialAmount,CONTRACT_ADDRESSES.BOND_FACTORY_TOKEN]
+        args:[user2,CONTRACT_ADDRESSES[chainId as ValidChainType].DEFAULT_ASSET_ADDRESS_ERC20,CONTRACT_ADDRESSES[chainId as ValidChainType].YIELD_PROVIDER_SERVICE,initialAmount,CONTRACT_ADDRESSES[chainId as ValidChainType].BOND_FACTORY_TOKEN]
     })
    }
 

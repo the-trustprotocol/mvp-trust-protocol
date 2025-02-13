@@ -11,8 +11,8 @@ import { useAccount, useReadContract } from "wagmi";
 import { erc20Abi, formatUnits, parseUnits } from "viem";
 import {
   CONTRACT_ADDRESSES,
-  DEFAULT_ASSET_ADDRESS_ERC20,
   NULL_ADDRESS,
+  CHAIN_ID
 } from "@/lib/constants";
 import {
   getEnsAddress,
@@ -25,6 +25,7 @@ import { createBond } from "@/lib/calls";
 import { isAddress } from "viem";
 import { USER_ABI } from "@/abi/user";
 import { useUserWalletFromRegistry } from "@/hooks/use-protocol";
+import { useChainId } from "wagmi";
 
 export interface StakeBondFormProps{
   onClose : () => void 
@@ -46,6 +47,7 @@ export function StakeBondForm({bondAddress, onClose}:StakeBondFormProps ){
   });
 
   const {data:userWallet} = useUserWalletFromRegistry(address ?? NULL_ADDRESS)
+  const chainId = useChainId();
 
 
  
@@ -54,9 +56,9 @@ export function StakeBondForm({bondAddress, onClose}:StakeBondFormProps ){
 
   const { data: approvedAmount } = useReadContract({
     abi: erc20Abi,
-    address: DEFAULT_ASSET_ADDRESS_ERC20,
+    address: CONTRACT_ADDRESSES[CHAIN_ID].DEFAULT_ASSET_ADDRESS_ERC20 as `0x${string}`,
     functionName: "allowance",
-    args: [address ?? NULL_ADDRESS, CONTRACT_ADDRESSES.USER_FACTORY],
+    args: [address ?? NULL_ADDRESS, CONTRACT_ADDRESSES[chainId as keyof typeof  CONTRACT_ADDRESSES ].USER_FACTORY],
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -104,7 +106,7 @@ export function StakeBondForm({bondAddress, onClose}:StakeBondFormProps ){
       if (approvedAmountFormatted < inputAmountParsed) {
         const approvalHash = await writeContract(config, {
           abi: erc20Abi,
-          address: DEFAULT_ASSET_ADDRESS_ERC20,
+          address: CONTRACT_ADDRESSES[CHAIN_ID].DEFAULT_ASSET_ADDRESS_ERC20 as `0x${string}`,
           functionName: "approve",
           args: [
             userWallet,
