@@ -72,7 +72,7 @@ export default function Dashboard() {
       <main className="container mx-auto p-4 flex flex-col gap-8">
         {/* Header */}
         <div className="flex flex-col gap-2">
-          <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-[#94b9ff]">
+          <h1 className="text-4xl font-bold bg-clip-text text-primary">
             Trust Dashboard
           </h1>
           <p className="text-lg text-muted-foreground">
@@ -317,3 +317,5 @@ export default function Dashboard() {
     </div>
   );
 }
+
+
