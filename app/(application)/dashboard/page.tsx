@@ -27,6 +27,7 @@ import { OnBoardForm } from "@/components/dashboard/onboard-form";
 import AnimatedWalletConnect from "@/components/animated-connect-button";
 import { BondModal } from "@/components/bond-modal";
 import truncateEthAddress from "@/lib/truncateAddress"
+import { BondLoadingModal } from "@/components/bond-loading-modal";
 
 
 function UserResolver({address}:{address:`0x${string}`}) {
@@ -72,7 +73,9 @@ export default function Dashboard() {
 
   //   return <AnimatedWalletConnect isOpen={showConnectModal} onClose={() => setShowConnectModal(false)} />
   // }
-
+  if(walletLoading){
+    return <BondLoadingModal/>
+  }
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#cdffd8] to-[#94b9ff]">
       <main className="container mx-auto p-4 flex flex-col gap-8">
