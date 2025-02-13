@@ -8,6 +8,16 @@
 //   IdentityRegistry deployed at: 0x55DDEA578b0a1A7fB6A2dC3c73C709bAae0CE28C
 //   UserFactory deployed at: 0xF84B8aB13f6Fe0F6aA72Fbd8Bd7F20d3A4a152Ee
 
+
+// == Logs ==
+//   bondFactory Token deployed at: 0xae8b9251F8d94AF41654F5b41e973ffcD5B45A89
+//   YieldProviderService deployed at: 0x7145340054C406e139f8B4BCB69EEDeE749b9BBA
+//   UserFactorySettings deployed at: 0xbA7bBF596b20FaaE6FcC1F5F069e5d3Be2908dc5
+//   UserSettings deployed at: 0x804dbe3582df3ba70e4f8f59156ecEa38B7A7BF4
+//   Registry deployed at: 0x0F9beb188F3Be063aD4EF17A5F773c2a4aC78E2b
+//   IdentityRegistry deployed at: 0x0c13aF9FC91e5B50fcba966E2a7981646CDDA03E
+//   UserFactory deployed at: 0xA2E8a27423e0f69D7F4faa293206a310577029eD
+
 import { getChainId } from "wagmi/actions";
 import { config } from "./wagmi-config";
 
@@ -16,13 +26,13 @@ import { config } from "./wagmi-config";
 
 export const CONTRACT_ADDRESSES = {
   11155111:{
-    BOND_FACTORY_TOKEN: '0xA4DE1d466F4E3d24b681EF404d4c9236d299dE9b' as const,
-    YIELD_PROVIDER_SERVICE: '0xeD720b5476DAF3b995dc1059002b193BE06df79e' as const,
-    USER_FACTORY_SETTINGS: '0x4a3b9f0088Bc1078BbA8a01648Fc990cc53FCf77' as const,
-    USER_SETTINGS: '0x15Bb232c6121A9EF9F5eB487660B412beEB9c6Bc' as const,
-    REGISTRY: '0x9e05c6B12A0Fb65785083a79e575D735FcE837Cf' as const,
-    IDENTITY_REGISTRY: '0x55DDEA578b0a1A7fB6A2dC3c73C709bAae0CE28C' as const,
-    USER_FACTORY: '0xF84B8aB13f6Fe0F6aA72Fbd8Bd7F20d3A4a152Ee' as const,
+    BOND_FACTORY_TOKEN: '0xae8b9251F8d94AF41654F5b41e973ffcD5B45A89' as const,
+    YIELD_PROVIDER_SERVICE: '0x7145340054C406e139f8B4BCB69EEDeE749b9BBA' as const,
+    USER_FACTORY_SETTINGS: '0xbA7bBF596b20FaaE6FcC1F5F069e5d3Be2908dc5' as const,
+    USER_SETTINGS: '0x804dbe3582df3ba70e4f8f59156ecEa38B7A7BF4' as const,
+    REGISTRY: '0x0F9beb188F3Be063aD4EF17A5F773c2a4aC78E2b' as const,
+    IDENTITY_REGISTRY: '0x0c13aF9FC91e5B50fcba966E2a7981646CDDA03E' as const,
+    USER_FACTORY: '0xA2E8a27423e0f69D7F4faa293206a310577029eD' as const,
     DEFAULT_ASSET_ADDRESS_ERC20: "0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8" as const,
   },
   8453: {

@@ -10,7 +10,7 @@ import { showTransactionToast } from "../showTransactionToast";
 import { useAccount, useReadContract } from "wagmi";
 import { erc20Abi, formatUnits, parseUnits } from "viem";
 import {
-  CONTRACT_ADDRESSES,
+CONTRACT_ADDRESSES,
   NULL_ADDRESS,
 } from "@/lib/constants";
 import {

@@ -178,6 +178,9 @@ export async function getUserDetails(user:`0x${string}`) {
         bondsDetails: finalBonds
     };
 
+    console.log("withdrawnnnnnn amount",userData.totalWithdrawnAmount)
+    console.log("brokennnnnnnnn amount",userData.totalBrokenAmount)
+
     console.log("userData",userData)
 
 

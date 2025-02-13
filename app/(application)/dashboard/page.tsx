@@ -103,7 +103,10 @@ export default function Dashboard() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">${userDetails?.totalAmount !== undefined && userDetails?.totalWithdrawnAmount !== undefined ? formateDefaultAssetAmount(BigInt(userDetails.totalAmount) - (BigInt(userDetails.totalWithdrawnAmount)) - BigInt(userDetails.totalBrokenAmount)): 'N/A'}</div>
+              <div className="text-2xl font-bold">${userDetails?.totalAmount !== undefined ? (Number(formateDefaultAssetAmount(BigInt(userDetails.totalAmount))) - Number(formateDefaultAssetAmount(BigInt(userDetails.totalWithdrawnAmount))) - Number(formateDefaultAssetAmount(BigInt(userDetails.totalBrokenAmount)))):0}</div>
+              <div>${userDetails?.totalWithdrawnAmount !== undefined ? formateDefaultAssetAmount(BigInt(userDetails.totalWithdrawnAmount)) : 0}</div>
+              <div>${userDetails?.totalBrokenAmount !== undefined ? formateDefaultAssetAmount(BigInt(userDetails.totalBrokenAmount)) : 0}</div>
+                {/* <div className="text-2xl font-bold">${userDetails?.totalAmount !== undefined && userDetails?.totalWithdrawnAmount !== undefined ? formateDefaultAssetAmount(BigInt(userDetails.totalAmount) - ((BigInt(userDetails.totalWithdrawnAmount)) + BigInt(userDetails.totalBrokenAmount))): 'N/A'}</div> */}
                 <p className="text-xs text-muted-foreground mt-1">Total Amount LifeTime ${userDetails?.totalAmount !== undefined ? formateDefaultAssetAmount(BigInt(userDetails.totalAmount)) : 'N/A'}</p>
               </CardContent>
           </Card>
