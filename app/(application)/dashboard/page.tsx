@@ -58,15 +58,20 @@ export default function Dashboard() {
       setShowOnboardModal(false);
     }
   }, [userWallet, walletLoading]);
-
+  
   // UseEffect to handle Wallet Connect modal
   useEffect(() => {
-    if (accountStatus !== 'connected' && !isConnected) {
+    if (!isConnected) {
       setShowConnectModal(true);
     } else {
       setShowConnectModal(false);
     }
-  }, [isConnected, accountStatus]);
+  }, [isConnected]);
+
+  // if(!isConnected){
+
+  //   return <AnimatedWalletConnect isOpen={showConnectModal} onClose={() => setShowConnectModal(false)} />
+  // }
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#cdffd8] to-[#94b9ff]">

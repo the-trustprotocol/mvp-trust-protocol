@@ -40,7 +40,7 @@ export async function getUserWalletFromRegistry(user:`0x${string}`) : Promise<`0
         args:[user],
         address:CONTRACT_ADDRESSES[chainId as ValidChainType].REGISTRY
     })
-    alert(address)
+    
     console.log("address",address)
     return address
 }

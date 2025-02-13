@@ -34,9 +34,9 @@ const AnimatedWalletConnect = ({ isOpen, onClose }: { isOpen: boolean; onClose: 
         exit={{ opacity: 0 }}
       >
         <motion.div className="relative w-full max-w-lg bg-white rounded-lg shadow-lg p-6">
-          <button className="absolute top-4 right-4" onClick={onClose}>
+          {/* <button className="absolute top-4 right-4" onClick={onClose}>
             <X className="w-5 h-5 text-gray-600 hover:text-gray-800" />
-          </button>
+          </button> */}
 
           <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-xl">
             <div className="p-8 text-center w-full">
