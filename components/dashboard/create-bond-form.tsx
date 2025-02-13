@@ -11,8 +11,9 @@ import { useAccount, useReadContract } from "wagmi";
 import { createPublicClient, erc20Abi, formatUnits, http, parseUnits } from "viem";
 import {
   CONTRACT_ADDRESSES,
-  DEFAULT_ASSET_ADDRESS_ERC20,
+  CHAIN_ID,
   NULL_ADDRESS,
+  ValidChainType,
 } from "@/lib/constants";
 import {
 
@@ -27,6 +28,10 @@ import { useUserWalletFromRegistry } from "@/hooks/use-protocol";
 import { getEnsAddress, getEnsName } from "viem/actions";
 import { mainnet } from "viem/chains";
 import { normalize } from 'viem/ens'
+import { useChainId } from 'wagmi';
+import { X } from "lucide-react";
+
+
 export function CreateBondForm({ onClose }: { onClose: () => void }) {
   const { address } = useAccount();
 
@@ -39,12 +44,13 @@ export function CreateBondForm({ onClose }: { onClose: () => void }) {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const chainId = useChainId();
 
   const { data: approvedAmount } = useReadContract({
     abi: erc20Abi,
-    address: DEFAULT_ASSET_ADDRESS_ERC20,
+    address: CONTRACT_ADDRESSES[chainId as ValidChainType].DEFAULT_ASSET_ADDRESS_ERC20 as `0x${string}`,
     functionName: "allowance",
-    args: [address ?? NULL_ADDRESS, CONTRACT_ADDRESSES.USER_FACTORY],
+    args: [address ?? NULL_ADDRESS, CONTRACT_ADDRESSES[chainId as ValidChainType].USER_FACTORY_SETTINGS],
   });
   const {data:userWallet} = useUserWalletFromRegistry(address ?? NULL_ADDRESS)
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,7 +101,7 @@ export function CreateBondForm({ onClose }: { onClose: () => void }) {
       if (approvedAmountFormatted < inputAmountParsed) {
         const approvalHash = await writeContract(config, {
           abi: erc20Abi,
-          address: DEFAULT_ASSET_ADDRESS_ERC20,
+          address: CONTRACT_ADDRESSES[chainId as ValidChainType].DEFAULT_ASSET_ADDRESS_ERC20 as `0x${string}`,
           functionName: "approve",
           args: [
             userWallet,
@@ -127,67 +133,65 @@ export function CreateBondForm({ onClose }: { onClose: () => void }) {
   };
 
   return (
-    <div className="min-h-screen w-screen flex items-center justify-center bg-gradient-to-br from-[#cdffd8] to-blue-300">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-md p-8 rounded-xl shadow-lg backdrop-blur-md bg-white bg-opacity-20 border border-white border-opacity-30"
-        style={{ backgroundColor: "rgba(148, 185, 255, 0.2)" }}
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5 }}
+      className="relative w-full max-w-md p-8 rounded-xl bg-gradient-to-br from-[#cdffd8] to-blue-300"
+    >
+      {/* Close button */}
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 text-blue-900 hover:text-blue-700"
       >
-        <h2 className="text-3xl font-bold mb-6 text-center text-blue-900">
-          Create Bond 
-        </h2>
-        <div className="space-y-6">
-          <div>
-            <label
-              htmlFor="address"
-              className="block text-sm font-medium text-blue-900 mb-1"
-            >
-              Ethereum Address or ENS Name
-            </label>
-            <Input
-              id="user2"
-              name="user2"
-              placeholder="0x... or example.eth"
-              value={formData.user2}
-              onChange={handleInputChange}
-              className="w-full bg-white bg-opacity-50 border-blue-300 focus:border-blue-500 focus:ring-blue-500"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="amount"
-              className="block text-sm font-medium text-blue-900 mb-1"
-            >
-              Amount in USDC
-            </label>
-            <div className="relative">
-              <Input
-                id="amount"
-                name="amount"
-                type="number"
-                placeholder="0.00"
-                value={formData.amount}
-                onChange={handleInputChange}
-                className="w-full bg-white bg-opacity-50 border-blue-300 focus:border-blue-500 focus:ring-blue-500 pl-10"
-              />
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                {/* Optionally add an icon or label here */}
-              </div>
-            </div>
-          </div>
-          <div className="flex space-x-4">
-            <Button
-              onClick={() => handleSubmit(true)}
-              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
-            >
-              Create User with Bond
-            </Button>
-          </div>
+        <X className="h-6 w-6" />
+      </button>
+
+      <h2 className="text-3xl font-bold mb-6 text-center text-blue-900">
+        Create Bond 
+      </h2>
+      
+      <div className="space-y-6">
+        <div>
+          <label
+            htmlFor="address"
+            className="block text-sm font-medium text-blue-900 mb-1"
+          >
+            Ethereum Address or ENS Name
+          </label>
+          <Input
+            id="user2"
+            name="user2"
+            placeholder="0x... or example.eth"
+            value={formData.user2}
+            onChange={handleInputChange}
+            className="w-full bg-white/50 border-white/30 focus:border-blue-500 focus:ring-blue-500 placeholder-blue-900/50 text-blue-900"
+          />
         </div>
-      </motion.div>
-      <AnimatePresence>{isLoading && <BondLoadingModal />}</AnimatePresence>
-    </div>
+        <div>
+          <label
+            htmlFor="amount"
+            className="block text-sm font-medium text-blue-900 mb-1"
+          >
+            Amount in USDC
+          </label>
+          <Input
+            id="amount"
+            name="amount"
+            type="number"
+            placeholder="0.00"
+            value={formData.amount}
+            onChange={handleInputChange}
+            className="w-full bg-white/50 border-white/30 focus:border-blue-500 focus:ring-blue-500 placeholder-blue-900/50 text-blue-900"
+          />
+        </div>
+        <Button
+          onClick={() => handleSubmit(true)}
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+        >
+          Create User with Bond
+        </Button>
+      </div>
+    </motion.div>
   );
 }

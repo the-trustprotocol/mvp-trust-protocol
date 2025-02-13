@@ -21,11 +21,13 @@ import {
 } from "lucide-react"
 
 import { useResolveUserWallet, useUserDetails, useUserWalletFromRegistry } from "@/hooks/use-protocol";
-import { NULL_ADDRESS } from "@/lib/constants";
+import { CHAIN_ID, NULL_ADDRESS } from "@/lib/constants";
 import { formateDefaultAssetAmount } from "@/lib/utils";
 import { OnBoardForm } from "@/components/dashboard/onboard-form";
 import AnimatedWalletConnect from "@/components/animated-connect-button";
 import { BondModal } from "@/components/bond-modal";
+import truncateEthAddress from "@/lib/truncateAddress"
+import { BondLoadingModal } from "@/components/bond-loading-modal";
 
 
 function UserResolver({address}:{address:`0x${string}`}) {
@@ -33,7 +35,7 @@ function UserResolver({address}:{address:`0x${string}`}) {
   if(isLoading) {
     return <span>Loading...</span>
   }
-  return (<span>{userWallet ?? NULL_ADDRESS}</span>)
+  return (<span>{truncateEthAddress(userWallet ?? NULL_ADDRESS)}</span>)
 
 }
 
@@ -44,7 +46,7 @@ export default function Dashboard() {
   const [bondAddress, setBondAddress] = useState<string | undefined>(undefined)
   const [isBondModalOpen, setIsBondModalOpen] = useState(false)
   const [bondModalType, setBondModalType] = useState<'create' | 'withdraw' | 'break' | 'stake'>('create')
-
+  console.log({CHAIN_ID})
   // Modal States
   const [showOnboardModal, setShowOnboardModal] = useState(false);
   const [showConnectModal, setShowConnectModal] = useState(false);
@@ -57,16 +59,23 @@ export default function Dashboard() {
       setShowOnboardModal(false);
     }
   }, [userWallet, walletLoading]);
-
+  
   // UseEffect to handle Wallet Connect modal
   useEffect(() => {
-    if (accountStatus !== 'connected' && !isConnected) {
+    if (!isConnected) {
       setShowConnectModal(true);
     } else {
       setShowConnectModal(false);
     }
-  }, [isConnected, accountStatus]);
+  }, [isConnected]);
 
+  // if(!isConnected){
+
+  //   return <AnimatedWalletConnect isOpen={showConnectModal} onClose={() => setShowConnectModal(false)} />
+  // }
+  if(walletLoading){
+    return <BondLoadingModal/>
+  }
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#cdffd8] to-[#94b9ff]">
       <main className="container mx-auto p-4 flex flex-col gap-8">
@@ -94,7 +103,10 @@ export default function Dashboard() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">${userDetails?.totalAmount !== undefined && userDetails?.totalWithdrawnAmount !== undefined ? formateDefaultAssetAmount(BigInt(userDetails.totalAmount) - BigInt(userDetails.totalWithdrawnAmount)) : 'N/A'}</div>
+              <div className="text-2xl font-bold">${userDetails?.totalAmount !== undefined ? (Number(formateDefaultAssetAmount(BigInt(userDetails.totalAmount))) - Number(formateDefaultAssetAmount(BigInt(userDetails.totalWithdrawnAmount))) - Number(formateDefaultAssetAmount(BigInt(userDetails.totalBrokenAmount)))):0}</div>
+              <div>${userDetails?.totalWithdrawnAmount !== undefined ? formateDefaultAssetAmount(BigInt(userDetails.totalWithdrawnAmount)) : 0}</div>
+              <div>${userDetails?.totalBrokenAmount !== undefined ? formateDefaultAssetAmount(BigInt(userDetails.totalBrokenAmount)) : 0}</div>
+                {/* <div className="text-2xl font-bold">${userDetails?.totalAmount !== undefined && userDetails?.totalWithdrawnAmount !== undefined ? formateDefaultAssetAmount(BigInt(userDetails.totalAmount) - ((BigInt(userDetails.totalWithdrawnAmount)) + BigInt(userDetails.totalBrokenAmount))): 'N/A'}</div> */}
                 <p className="text-xs text-muted-foreground mt-1">Total Amount LifeTime ${userDetails?.totalAmount !== undefined ? formateDefaultAssetAmount(BigInt(userDetails.totalAmount)) : 'N/A'}</p>
               </CardContent>
           </Card>
@@ -306,6 +318,7 @@ export default function Dashboard() {
             onClose={() => setShowConnectModal(false)}
           />
         )}
+        
 
       <BondModal
         isOpen={isBondModalOpen}

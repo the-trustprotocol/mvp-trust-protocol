@@ -1,3 +1,4 @@
+"use client"
 import { createConfig, http } from 'wagmi'
 import { base, mainnet, sepolia } from 'wagmi/chains'
 import { injected } from 'wagmi/connectors'
@@ -6,9 +7,11 @@ import { getDefaultConfig } from '@rainbow-me/rainbowkit';
 export const config = getDefaultConfig({
   appName: 'TRUST PROTOCOL MVP',
   projectId: 'cbf531fe6f23024fad7a176403e566d5',
-  chains: [base],
+  chains: [base, sepolia],
+
   transports:{
-    [base.id]:http("https://base-mainnet.g.alchemy.com/v2/i0VnxDFKRiL1F8qF5HdtVo0OcILLv73d")
+    [base.id]:http(`https://base-mainnet.g.alchemy.com/v2/i0VnxDFKRiL1F8qF5HdtVo0OcILLv73d`),
+    [sepolia.id]:http(`https://eth-sepolia.g.alchemy.com/v2/i0VnxDFKRiL1F8qF5HdtVo0OcILLv73d`)
   },
   // transports: {
   //   base: http(),

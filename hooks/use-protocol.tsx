@@ -8,11 +8,16 @@ import { REGISTRY_ABI } from '@/abi/registry';
 import { USER_FACTORY_ABI } from '@/abi/user-factory';
 import { USER_ABI } from '@/abi/user';
 import { config } from '@/lib/wagmi-config';
-import { CONTRACT_ADDRESSES, DEFAULT_ASSET_ADDRESS_ERC20, NULL_ADDRESS } from '@/lib/constants';
+import { CONTRACT_ADDRESSES, NULL_ADDRESS } from '@/lib/constants';
 import { createBond, getApprovalAddressForCreateBonds, getUserDetails, getUserWalletFromRegistry, User } from '@/lib/calls';
+import { useChainId } from 'wagmi';
 
-
-export const useResolveUserWallet = (userWallet: `0x${string}`) => { 
+export const useProtocolChainId = () => {
+  const chainId = useChainId();
+  return (chainId ?? 11155111) as keyof typeof CONTRACT_ADDRESSES;
+}
+export const useResolveUserWallet = (userWallet: `0x${string}`) => {
+  
   return useQuery<`0x${string}`>({
     queryKey: ['resolveUserWallet', userWallet],
     queryFn: async () => {
@@ -34,6 +39,8 @@ export const useResolveUserWallet = (userWallet: `0x${string}`) => {
  * @returns A query object containing the user wallet address.
  */
 export const useUserWalletFromRegistry = (user: `0x${string}`) => {
+  const chainId = useProtocolChainId();
+  console.log("chainId",chainId)
   return useQuery<`0x${string}`>({
     queryKey: ['userWallet', user],
     queryFn: async () => {

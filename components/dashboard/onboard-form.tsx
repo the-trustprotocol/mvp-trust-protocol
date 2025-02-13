@@ -4,8 +4,8 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAccount, useReadContract } from "wagmi";
 import { createPublicClient, erc20Abi, formatUnits, http, parseUnits } from "viem";
-import { CONTRACT_ADDRESSES, DEFAULT_ASSET_ADDRESS_ERC20, NULL_ADDRESS } from "@/lib/constants";
-import { waitForTransactionReceipt, writeContract } from "wagmi/actions";
+import { CONTRACT_ADDRESSES, NULL_ADDRESS, CHAIN_ID, ValidChainType } from "@/lib/constants";
+import { getChainId, waitForTransactionReceipt, writeContract } from "wagmi/actions";
 import { config } from "@/lib/wagmi-config";
 import { USER_FACTORY_ABI } from "@/abi/user-factory";
 import { createBond } from "@/lib/calls";
@@ -18,17 +18,20 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { BondLoadingModal } from "@/components/bond-loading-modal";
 import { ArrowRight, EclipseIcon as Ethereum, DollarSign, Loader2 } from "lucide-react";
+import { useChainId } from "wagmi";
+
 
 export function OnBoardForm({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const { address } = useAccount();
   const [formData, setFormData] = useState({ user2: "", amount: "" });
   const [isLoading, setIsLoading] = useState(false);
+  const chainId = useChainId();
 
   const { data: approvedAmount } = useReadContract({
     abi: erc20Abi,
-    address: DEFAULT_ASSET_ADDRESS_ERC20,
+    address: CONTRACT_ADDRESSES[chainId as ValidChainType].DEFAULT_ASSET_ADDRESS_ERC20 as `0x${string}`,
     functionName: "allowance",
-    args: [address ?? NULL_ADDRESS, CONTRACT_ADDRESSES.USER_FACTORY],
+    args: [address ?? NULL_ADDRESS, CONTRACT_ADDRESSES[CHAIN_ID].USER_FACTORY],
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,11 +45,14 @@ export function OnBoardForm({ isOpen, onClose }: { isOpen: boolean; onClose: () 
         toast.error("No address found");
         throw new Error("No address found");
       }
-
+      const chainId = getChainId(config)
+      console.log("chainIasdfasdfdd",chainId)
+      console.log("USR FACTORY", CONTRACT_ADDRESSES[chainId as ValidChainType]?.USER_FACTORY)
       if (!createUser) {
+       
         const hash = await writeContract(config, {
           abi: USER_FACTORY_ABI,
-          address: CONTRACT_ADDRESSES.USER_FACTORY,
+          address: CONTRACT_ADDRESSES[chainId as ValidChainType].USER_FACTORY,
           functionName: "createUser",
           args: [address],
         });
@@ -82,12 +88,13 @@ export function OnBoardForm({ isOpen, onClose }: { isOpen: boolean; onClose: () 
       );
 
       if (approvedAmountFormatted < inputAmountParsed) {
+
         const approvalHash = await writeContract(config, {
           abi: erc20Abi,
-          address: DEFAULT_ASSET_ADDRESS_ERC20,
+          address: CONTRACT_ADDRESSES[chainId as ValidChainType].DEFAULT_ASSET_ADDRESS_ERC20 as `0x${string}`,
           functionName: "approve",
           args: [
-            CONTRACT_ADDRESSES.USER_FACTORY,
+            CONTRACT_ADDRESSES[chainId as ValidChainType].USER_FACTORY,
             parseUnits(inputAmountParsed.toString(), 6),
           ],
         });
