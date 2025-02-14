@@ -104,7 +104,7 @@ export default function Dashboard() {
 
         {/* Metrics */}
         <div className="grid gap-4 md:grid-cols-3">
-          <Card className="hover:shadow-lg transition-shadow">
+          <Card className="hover:shadow-lg bg-white/80 transition-shadow">
               <CardHeader className="pb-2">
                 <div className="flex items-center gap-2">
                   <div className="p-2 rounded-full bg-primary/10">
@@ -142,7 +142,7 @@ export default function Dashboard() {
               <div className="text-2xl font-bold">{!userDetailsLoading ? userDetails?.totalActiveBonds ?? 0 : 'Loading...'}</div>
             </CardContent>
           </Card> */}
-          <Card className="hover:shadow-lg transition-shadow">
+          <Card className="hover:shadow-lg bg-white/80 transition-shadow">
               <CardHeader className="pb-2">
                 <div className="flex items-center gap-2">
                   <div className="p-2 rounded-full bg-primary/10">
@@ -173,7 +173,7 @@ export default function Dashboard() {
           </Card>
         */}
 
-          <Card className="hover:shadow-lg transition-shadow">
+          <Card className="hover:shadow-lg bg-white/80 transition-shadow">
             <CardHeader className="pb-2">
               <div className="flex items-center gap-2">
                 <div className="p-2 rounded-full bg-primary/10">
@@ -211,7 +211,7 @@ export default function Dashboard() {
         </div>
 
         <div className="mt-8 flex-1 overflow-hidden min-h-[400px]">
-          <Card className="h-full flex flex-col">
+          <Card className="h-full bg-white/80 flex flex-col">
             <CardHeader className="border-b">
               <h2 className="text-xl font-semibold">Active Bonds</h2>
             </CardHeader>
