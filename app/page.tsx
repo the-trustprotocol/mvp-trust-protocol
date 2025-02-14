@@ -34,7 +34,7 @@ export default function Home() {
         <Header />
         
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center py-12 md:py-20 lg:py-24 space-y-6 md:space-y-8">
+          <div className="text-center py-12 md:py-20 lg:py-12 space-y-6 md:space-y-8">
             {/* Hero Section */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -45,14 +45,14 @@ export default function Home() {
               <motion.div
                 animate={{ y: [0, -15, 0] }}
                 transition={{ duration: 3, repeat: Infinity }}
-                className="w-full max-w-[400px] md:max-w-[500px] lg:max-w-[600px]"
+                className="w-full max-w-[700px] md:max-w-[700px] lg:max-w-[800px]"
               >
                 <Image
-                  src="/trust-hero.png"
-                  width={400}
-                  height={400}
+                  src="/trust_hero.svg"
+                  width={650}
+                  height={700}
                   alt="Trust Protocol"
-                  className="w-[60%] md:w-[50%] mx-auto drop-shadow-2xl"
+                  className="mx-auto drop-shadow-2xl"
                   priority
                 />
               </motion.div>
