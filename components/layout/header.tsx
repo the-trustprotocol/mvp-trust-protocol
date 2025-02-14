@@ -42,7 +42,7 @@ export default function Header() {
               Leaderboard
             </Link> */}
             {[
-              { href: "https://www.overleaf.com/read/zyhmdxynwxgt#a050e6", label: "Whitepaper" },
+              { href: "https://drive.google.com/file/d/1M1AUNLmCvXPADI_5Ld7QKYN2WImuDJWJ/view?usp=sharing", label: "Whitepaper" },
               { href: "https://t.me/+e2_TcJOoNO80MzA9", label: "Telegram" },
               { href: "https://x.com/_trustprotocol", label: "Twitter" },
               { href: "https://github.com/the-trustprotocol", label: "Github" }
