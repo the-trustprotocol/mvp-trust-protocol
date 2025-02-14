@@ -22,19 +22,19 @@ export default function Footer() {
             <h4 className="text-lg font-semibold text-primary-800">Protocol</h4>
             <nav className="flex flex-col space-y-1 sm:space-y-2">
               <Link 
-                href="/docs" 
+                href="#" 
                 className="text-sm sm:text-base text-primary-700 hover:text-primary-900 transition-colors hover:underline"
               >
                 Documentation
               </Link>
               <Link 
-                href="/governance" 
+                href="#" 
                 className="text-sm sm:text-base text-primary-700 hover:text-primary-900 transition-colors hover:underline"
               >
                 Governance
               </Link>
               <Link 
-                href="/blog" 
+                href="#" 
                 className="text-sm sm:text-base text-primary-700 hover:text-primary-900 transition-colors hover:underline"
               >
                 Blog
@@ -47,7 +47,7 @@ export default function Footer() {
             <h4 className="text-lg font-semibold text-primary-800">Community</h4>
             <div className="flex gap-3 sm:gap-4 flex-wrap">
               <motion.a 
-                href="https://github.com/trust-protocol" 
+                href="https://github.com/the-trustprotocol" 
                 target="_blank"
                 whileHover={{ scale: 1.1 }}
                 className="p-2 bg-white/20 rounded-full hover:bg-primary-100 transition-all border border-primary-200"
@@ -56,7 +56,7 @@ export default function Footer() {
                 <Github className="w-5 h-5 sm:w-6 sm:h-6 text-primary-800" />
               </motion.a>
               <motion.a 
-                href="https://twitter.com/trust_protocol" 
+                href="https://x.com/_trustprotocol" 
                 target="_blank"
                 whileHover={{ scale: 1.1 }}
                 className="p-2 bg-white/20 rounded-full hover:bg-primary-100 transition-all border border-primary-200"

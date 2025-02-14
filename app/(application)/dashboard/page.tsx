@@ -85,6 +85,9 @@ export default function Dashboard() {
   if(walletLoading){
     return <BondLoadingModal/>
   }
+
+  console.log("USER WALLET", userWallet)
+  console.log("USER DETAILS", userDetails)
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#cdffd8] to-[#94b9ff]">
      
@@ -113,11 +116,20 @@ export default function Dashboard() {
                 </div>
               </CardHeader>
               <CardContent>
-              <div className="text-2xl font-bold">${userDetails?.totalAmount !== undefined ? (Number(formateDefaultAssetAmount(BigInt(userDetails.totalAmount))) - Number(formateDefaultAssetAmount(BigInt(userDetails.totalWithdrawnAmount))) - Number(formateDefaultAssetAmount(BigInt(userDetails.totalBrokenAmount)))):0}</div>
-              <div>${userDetails?.totalWithdrawnAmount !== undefined ? formateDefaultAssetAmount(BigInt(userDetails.totalWithdrawnAmount)) : 0}</div>
-              <div>${userDetails?.totalBrokenAmount !== undefined ? formateDefaultAssetAmount(BigInt(userDetails.totalBrokenAmount)) : 0}</div>
+              <div className="text-2xl font-bold">
+                ${userDetails?.totalAmount !== undefined
+                  ? (
+                      Number(formateDefaultAssetAmount(BigInt(userDetails.totalAmount))) -
+                      Number(formateDefaultAssetAmount(BigInt(userDetails.totalWithdrawnAmount))) -
+                      Number(formateDefaultAssetAmount(BigInt(userDetails.totalBrokenAmount)))
+                    ).toFixed(2)
+                  : '0.00'
+                }
+              </div>
+              <div className="text-sm text-muted-foreground mt-1">Total Withdrawn Amount: ${userDetails?.totalWithdrawnAmount !== undefined ? (Number(formateDefaultAssetAmount(BigInt(userDetails.totalWithdrawnAmount)))).toFixed(2) : '0.00'}</div>
+              <div className="text-sm text-muted-foreground mt-1">Total Broken Amount: ${userDetails?.totalBrokenAmount !== undefined ? (Number(formateDefaultAssetAmount(BigInt(userDetails.totalBrokenAmount)))).toFixed(2) : "0.00"}</div>
                 {/* <div className="text-2xl font-bold">${userDetails?.totalAmount !== undefined && userDetails?.totalWithdrawnAmount !== undefined ? formateDefaultAssetAmount(BigInt(userDetails.totalAmount) - ((BigInt(userDetails.totalWithdrawnAmount)) + BigInt(userDetails.totalBrokenAmount))): 'N/A'}</div> */}
-                <p className="text-xs text-muted-foreground mt-1">Total Amount LifeTime ${userDetails?.totalAmount !== undefined ? formateDefaultAssetAmount(BigInt(userDetails.totalAmount)) : 'N/A'}</p>
+                <div className="text-sm text-muted-foreground mt-1">Total Amount LifeTime: ${userDetails?.totalAmount !== undefined ? (Number(formateDefaultAssetAmount(BigInt(userDetails.totalAmount)))).toFixed(2) : 'N/A'}</div>
               </CardContent>
           </Card>
 
@@ -143,7 +155,10 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{userDetails?.totalActiveBonds ?? 0}</div>
-                <p className="text-xs text-muted-foreground mt-1">{userDetails?.totalBrokenBonds} broken bonds, {userDetails?.totalWithdrawnBonds} withdrawn bonds</p>
+                <div className="text-sm text-muted-foreground mt-1">Total Broken Bonds: {userDetails?.totalBrokenBonds} </div>
+                <div className="text-sm text-muted-foreground mt-1">Total Withdrawn Bonds: {userDetails?.totalWithdrawnBonds} </div>
+                <div className="text-sm text-muted-foreground mt-1">Total Bonds: {userDetails?.totalBonds} </div>
+                
               </CardContent>
             </Card>
 

@@ -49,10 +49,10 @@ export default function Home() {
               >
                 <Image
                   src="/trust-hero.png"
-                  width={600}
-                  height={600}
+                  width={400}
+                  height={400}
                   alt="Trust Protocol"
-                  className="w-full drop-shadow-2xl"
+                  className="w-[60%] md:w-[50%] mx-auto drop-shadow-2xl"
                   priority
                 />
               </motion.div>
