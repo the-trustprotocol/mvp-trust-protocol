@@ -32,7 +32,7 @@ import { useChainId } from 'wagmi';
 import { X } from "lucide-react";
 
 
-export function CreateBondForm({ onClose }: { onClose: () => void }) {
+export function CreateBondForm({ onClose, onSuccess }: { onClose: () => void, onSuccess?: () => void }) {
   const { address } = useAccount();
 
   const [formData, setFormData] = useState<{
@@ -122,8 +122,9 @@ export function CreateBondForm({ onClose }: { onClose: () => void }) {
       await waitForTransactionReceipt(config, {
         hash: hash,
       });
-      showTransactionToast(hash)
-      onClose();
+      showTransactionToast(hash, chainId as ValidChainType);
+      
+      onSuccess?.();
     } catch (error) {
       toast.error((error as Error).message);
       console.error(error);
@@ -133,6 +134,7 @@ export function CreateBondForm({ onClose }: { onClose: () => void }) {
   };
 
   return (
+    <>
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
@@ -193,5 +195,10 @@ export function CreateBondForm({ onClose }: { onClose: () => void }) {
         </Button>
       </div>
     </motion.div>
+    <AnimatePresence>{isLoading && <BondLoadingModal />}</AnimatePresence>  
+
+    </>
+    
+    
   );
 }

@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input"
 import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
+import Header from "@/components/layout/header"
 
 export default function LeaderboardPage() {
   const [currentPage, setCurrentPage] = useState(1)
@@ -66,6 +67,7 @@ export default function LeaderboardPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#cdffd8] to-[#94b9ff]">
+      
       <main className="container mx-auto p-4 flex flex-col gap-8">
         {/* Header Section */}
         <div className="flex flex-col gap-6">

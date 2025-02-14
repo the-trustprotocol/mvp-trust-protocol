@@ -28,6 +28,7 @@ import AnimatedWalletConnect from "@/components/animated-connect-button";
 import { BondModal } from "@/components/bond-modal";
 import truncateEthAddress from "@/lib/truncateAddress"
 import { BondLoadingModal } from "@/components/bond-loading-modal";
+import Header from "@/components/layout/header";
 
 
 function UserResolver({address}:{address:`0x${string}`}) {
@@ -41,8 +42,8 @@ function UserResolver({address}:{address:`0x${string}`}) {
 
 export default function Dashboard() {
   const { isConnected, address, status: accountStatus } = useAccount();
-  const { data: userWallet, isLoading: walletLoading } = useUserWalletFromRegistry(address ?? NULL_ADDRESS);
-  const { data: userDetails, isLoading: userDetailsLoading } = useUserDetails(address ?? NULL_ADDRESS);
+  const { data: userWallet, isLoading: walletLoading, refetch:refetchUserWallet } = useUserWalletFromRegistry(address ?? NULL_ADDRESS);
+  const { data: userDetails, isLoading: userDetailsLoading, refetch: refetchUserDetails} = useUserDetails(address ?? NULL_ADDRESS);
   const [bondAddress, setBondAddress] = useState<string | undefined>(undefined)
   const [isBondModalOpen, setIsBondModalOpen] = useState(false)
   const [bondModalType, setBondModalType] = useState<'create' | 'withdraw' | 'break' | 'stake'>('create')
@@ -50,6 +51,14 @@ export default function Dashboard() {
   // Modal States
   const [showOnboardModal, setShowOnboardModal] = useState(false);
   const [showConnectModal, setShowConnectModal] = useState(false);
+
+
+  const refetchData = async () => {
+    await Promise.all([
+      refetchUserDetails(),
+      refetchUserWallet()
+    ]);
+  };
 
   // UseEffect to open OnBoard modal if userWallet is NULL
   useEffect(() => {
@@ -78,6 +87,7 @@ export default function Dashboard() {
   }
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#cdffd8] to-[#94b9ff]">
+     
       <main className="container mx-auto p-4 flex flex-col gap-8">
         {/* Header */}
         <div className="flex flex-col gap-2">
@@ -325,7 +335,9 @@ export default function Dashboard() {
         onClose={() => setIsBondModalOpen(false)}
         type={bondModalType}
         bondAddress={bondAddress}
+        onSuccess={refetchData}
       />
+      
       </AnimatePresence>
     </div>
   );

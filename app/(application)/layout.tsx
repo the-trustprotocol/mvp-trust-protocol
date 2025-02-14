@@ -1,5 +1,5 @@
 
-import AppHeader from '@/components/layout/app-header'
+import Header from '@/components/layout/header'
 import type React from 'react'
 
 export default async function DashBoardlayout({
@@ -11,7 +11,7 @@ export default async function DashBoardlayout({
   return (
     <div className="h-dvh w-full">
      
-     <AppHeader />
+     <Header />
         {children} 
     </div>
   )

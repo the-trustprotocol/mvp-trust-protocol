@@ -16,27 +16,64 @@ import { WithdrawBondForm } from './dashboard/withdraw-form'
 export interface BondModalProps {
   isOpen: boolean
   onClose: () => void
-  type: 'create' | 'withdraw' | 'break' | 'stake',
+  type: 'create' | 'withdraw' | 'break' | 'stake'
   bondAddress?: string
-
-  
+  onSuccess?: () => void // Callback to trigger data refresh
 }
 
-export function BondModal({ isOpen, onClose, type, bondAddress }: BondModalProps) {
-  const [isLoading, setIsLoading] = useState(false); // Loading state
+export function BondModal({ isOpen, onClose, type, bondAddress, onSuccess }: BondModalProps) {
+  const [isLoading, setIsLoading] = useState(false) // Loading state
 
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
+  // Handle modal content based on type
   function handleModal(type: 'create' | 'withdraw' | 'break' | 'stake') {
     switch (type) {
       case 'create':
-        return <CreateBondForm onClose={onClose} />;
+        return (
+          <CreateBondForm 
+            onClose={onClose} 
+            onSuccess={() => {
+              onClose()
+              onSuccess?.() // Trigger data refresh
+            }} 
+          />
+        )
       case 'withdraw':
-        return <WithdrawBondForm bondAddress={bondAddress ?? NULL_ADDRESS} onClose={onClose} />;
+        return (
+          <WithdrawBondForm 
+            bondAddress={bondAddress ?? NULL_ADDRESS} 
+            onClose={onClose} 
+            onSuccess={() => {
+              onClose()
+              onSuccess?.() // Trigger data refresh
+            }} 
+          />
+        )
       case 'break':
-        return <BreakBondForm bondAddress={bondAddress ?? NULL_ADDRESS} onClose={onClose} />;
+        return (
+          <BreakBondForm 
+            bondAddress={bondAddress ?? NULL_ADDRESS} 
+            onClose={onClose} 
+            onSuccess={() => {
+              onClose()
+              onSuccess?.() // Trigger data refresh
+            }} 
+          />
+        )
       case 'stake':
-        return <StakeBondForm bondAddress={bondAddress ?? NULL_ADDRESS} onClose={onClose} />;
+        return (
+          <StakeBondForm 
+            bondAddress={bondAddress ?? NULL_ADDRESS} 
+            onClose={onClose} 
+            onSuccess={() => {
+              onClose()
+              onSuccess?.() // Trigger data refresh
+            }} 
+          />
+        )
+      default:
+        return null
     }
   }
 

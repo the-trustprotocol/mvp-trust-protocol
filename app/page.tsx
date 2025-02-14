@@ -23,7 +23,7 @@ export default function Home() {
       <div className="min-h-screen bg-gradient-to-r from-[#cdffd8] to-[#94b9ff] z-10 relative overflow-hidden">
         <motion.div
           style={{ opacity }}
-          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-20"
+          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-20 hidden md:block"
         >
           <div className="animate-bounce flex flex-col items-center">
             <span className="text-sm text-muted-foreground">Scroll to explore</span>
@@ -33,8 +33,8 @@ export default function Home() {
 
         <Header />
         
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center py-16 md:py-24 space-y-8">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center py-12 md:py-20 lg:py-24 space-y-6 md:space-y-8">
             {/* Hero Section */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -45,13 +45,15 @@ export default function Home() {
               <motion.div
                 animate={{ y: [0, -15, 0] }}
                 transition={{ duration: 3, repeat: Infinity }}
+                className="w-full max-w-[400px] md:max-w-[500px] lg:max-w-[600px]"
               >
                 <Image
                   src="/trust-hero.png"
-                  width={400}
-                  height={400}
+                  width={600}
+                  height={600}
                   alt="Trust Protocol"
-                  className="w-[60%] md:w-[50%] mx-auto drop-shadow-2xl"
+                  className="w-full drop-shadow-2xl"
+                  priority
                 />
               </motion.div>
             </motion.div>
@@ -60,19 +62,22 @@ export default function Home() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
+              className="px-2 sm:px-0"
             >
-              <h1 className="text-2xl lg:text-5xl text-primary font-bold tracking-wider mb-2">
-                Programmable Onchain Trust Primitive
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-3 md:mb-4 flex flex-wrap justify-center items-center gap-2">
+                <span className="text-primary">
+                  Programmable Onchain Trust Primitive
+                </span>
                 <Tooltip>
-                  <TooltipTrigger className="ml-2 inline-block">
-                    <Info className="w-5 h-5 text-primary/80 hover:text-primary cursor-help" />
+                  <TooltipTrigger className="shrink-0">
+                    <Info className="w-5 h-5 md:w-6 md:h-6 text-primary/80 hover:text-primary cursor-help" />
                   </TooltipTrigger>
-                  <TooltipContent className="bg-background/90 backdrop-blur-sm">
+                  <TooltipContent className="bg-background/90 backdrop-blur-sm max-w-[260px] text-center">
                     <p className="text-sm">Trust primitive enabling decentralized reputation management</p>
                   </TooltipContent>
                 </Tooltip>
               </h1>
-              <p className="text-lg md:text-2xl text-muted-foreground font-light max-w-2xl mx-auto">
+              <p className="text-base md:text-lg lg:text-xl text-muted-foreground font-light max-w-2xl mx-auto">
                 Trust protocol is an open-source layer zero for decentralized trust infrastructure
               </p>
             </motion.div>
@@ -88,11 +93,11 @@ export default function Home() {
             >
               <Button 
                 asChild
-                className="group transform transition-all"
+                className="group transform transition-all text-lg md:text-base px-6 py-5 md:px-8 md:py-6"
               >
                 <Link 
                   href="/dashboard" 
-                  className="text-white flex items-center gap-2 px-8 py-6 text-lg"
+                  className="text-white flex items-center gap-2"
                 >
                   <Rocket className={cn(
                     "w-5 h-5 transition-transform",
@@ -113,6 +118,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
+            className="px-4 sm:px-0"
           >
             <Features />
           </motion.div>
@@ -121,6 +127,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
+            className="px-4 sm:px-0"
           >
             <HowItWorks />
           </motion.div>
@@ -129,6 +136,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
+            className="px-4 sm:px-0"
           >
             <UseCases />
           </motion.div>
