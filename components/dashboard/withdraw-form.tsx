@@ -7,11 +7,12 @@ import { BondLoadingModal } from "@/components/bond-loading-modal";
 import Image from "next/image";
 import { toast } from "sonner";
 import { showTransactionToast } from "../showTransactionToast";
-import { useAccount, useReadContract } from "wagmi";
+import { useAccount, useChainId, useReadContract } from "wagmi";
 import { erc20Abi, formatUnits, parseUnits } from "viem";
 import {
 CONTRACT_ADDRESSES,
   NULL_ADDRESS,
+  ValidChainType,
 } from "@/lib/constants";
 import {
   getEnsAddress,
@@ -24,15 +25,18 @@ import { createBond } from "@/lib/calls";
 import { isAddress } from "viem";
 import { USER_ABI } from "@/abi/user";
 import { useUserWalletFromRegistry } from "@/hooks/use-protocol";
+import { X } from "lucide-react";
 
 export interface WithdrawBondFormProps {
   onClose : () => void 
   bondAddress: string
+  onSuccess?: () => void
 }
 
 
-export function WithdrawBondForm({bondAddress, onClose}:WithdrawBondFormProps ) {
+export function WithdrawBondForm({bondAddress, onClose, onSuccess}:WithdrawBondFormProps ) {
   const { address } = useAccount();
+  const chainId = useChainId();
 
   const [formData, setFormData] = useState<{
     user2: string;
@@ -80,8 +84,8 @@ export function WithdrawBondForm({bondAddress, onClose}:WithdrawBondFormProps ) 
       await waitForTransactionReceipt(config, {
         hash: hash,
       });
-      showTransactionToast(hash)
-      onClose()
+      showTransactionToast(hash, chainId as ValidChainType);
+      onSuccess?.();
     } catch (error) {
       toast.error((error as Error).message);
       console.error(error);
@@ -93,14 +97,21 @@ export function WithdrawBondForm({bondAddress, onClose}:WithdrawBondFormProps ) 
   };
 
   return (
-    <div className="min-h-screen w-screen flex items-center justify-center bg-gradient-to-br from-[#cdffd8] to-blue-300">
+    <>
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-md p-8 rounded-xl shadow-lg backdrop-blur-md bg-white bg-opacity-20 border border-white border-opacity-30"
-        style={{ backgroundColor: "rgba(148, 185, 255, 0.2)" }}
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5 }}
+      className="relative w-full max-w-md p-8 rounded-xl bg-gradient-to-br from-[#cdffd8] to-blue-300"
+    >
+      {/* Close button */}
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 text-blue-900 hover:text-blue-700"
       >
+        <X className="h-6 w-6" />
+      </button>
+
         <h2 className="text-3xl font-bold mb-6 text-center text-blue-900">
           Are you sure to withdraw ?
         </h2>
@@ -120,6 +131,6 @@ export function WithdrawBondForm({bondAddress, onClose}:WithdrawBondFormProps ) 
         </div>
       </motion.div>
       <AnimatePresence>{isLoading && <BondLoadingModal />}</AnimatePresence>
-    </div>
+    </>
   );
 }

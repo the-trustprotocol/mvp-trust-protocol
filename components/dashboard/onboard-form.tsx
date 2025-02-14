@@ -57,7 +57,7 @@ export function OnBoardForm({ isOpen, onClose }: { isOpen: boolean; onClose: () 
           args: [address],
         });
         await waitForTransactionReceipt(config, { hash });
-        showTransactionToast(hash);
+        showTransactionToast(hash, chainId as ValidChainType);
         return; // We’ll handle closing in the finally block
       }
 
@@ -107,7 +107,7 @@ export function OnBoardForm({ isOpen, onClose }: { isOpen: boolean; onClose: () 
         parseUnits(formData.amount, 6)
       );
       await waitForTransactionReceipt(config, { hash });
-      showTransactionToast(hash);
+      showTransactionToast(hash, chainId as ValidChainType);
     } catch (error) {
       toast.error((error as Error).message);
       console.error(error);

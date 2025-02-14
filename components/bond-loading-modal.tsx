@@ -1,4 +1,5 @@
 import { motion } from "framer-motion"
+import { HandshakeIcon } from "lucide-react"
 
 export function BondLoadingModal() {
   return (
@@ -6,50 +7,79 @@ export function BondLoadingModal() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      className="fixed inset-0 bg-gradient-to-r from-[#cdffd8]/80 to-[#94b9ff]/80 backdrop-blur-sm flex items-center justify-center z-50"
     >
-      <div className="bg-white rounded-lg p-8 flex flex-col items-center">
-        <div className="relative w-32 h-32">
-          <motion.div
-            className="absolute top-0 left-0 w-16 h-16 bg-blue-500 rounded-full"
-            animate={{
-              x: [0, 64, 64, 0],
-              y: [0, 0, 64, 64],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: "linear",
-            }}
-          />
-          <motion.div
-            className="absolute bottom-0 right-0 w-16 h-16 bg-green-500 rounded-full"
-            animate={{
-              x: [0, -64, -64, 0],
-              y: [0, 0, -64, -64],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: "linear",
-            }}
-          />
-          <motion.div
-            className="absolute top-1/2 left-1/2 w-1 h-1 bg-white"
-            style={{ x: "-50%", y: "-50%" }}
-            animate={{
-              scale: [0, 10, 0],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: "easeInOut",
-            }}
-          />
-        </div>
-        <p className="mt-4 text-lg font-semibold text-blue-900">Loading...</p>
+      <div className="relative w-48 h-48 flex items-center justify-center">
+        {/* Orbital Circles */}
+        <motion.div
+          className="absolute w-32 h-32 border-2 border-[#0066FF] rounded-full"
+          animate={{
+            rotate: 360,
+            scale: [1, 1.2, 1],
+          }}
+          transition={{
+            duration: 2.5,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+        
+        <motion.div
+          className="absolute w-24 h-24 border-2 border-[#94b9ff] rounded-full"
+          animate={{
+            rotate: -360,
+            scale: [1, 0.8, 1],
+          }}
+          transition={{
+            duration: 2.5,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+
+        {/* Central Icon */}
+        <motion.div
+          className="flex items-center justify-center"
+          animate={{
+            scale: [1, 1.1, 1],
+            rotate: [0, 10, -10, 0],
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        >
+          <HandshakeIcon className="w-12 h-12 text-[#0066FF]" />
+        </motion.div>
+
+        {/* Pulsing Background */}
+        <motion.div
+          className="absolute inset-0 rounded-full bg-[#0066FF]/10"
+          animate={{
+            scale: [1, 1.5, 1],
+            opacity: [0.3, 0.1, 0.3],
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+          }}
+        />
       </div>
+
+      {/* Loading Text */}
+      <motion.p
+        className="absolute bottom-20 text-lg font-semibold text-[#0066FF]"
+        animate={{
+          opacity: [0.8, 1, 0.8],
+        }}
+        transition={{
+          duration: 1.5,
+          repeat: Infinity,
+        }}
+      >
+        Establishing Trust...
+      </motion.p>
     </motion.div>
   )
 }
-

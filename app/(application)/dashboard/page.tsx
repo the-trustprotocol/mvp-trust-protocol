@@ -28,6 +28,7 @@ import AnimatedWalletConnect from "@/components/animated-connect-button";
 import { BondModal } from "@/components/bond-modal";
 import truncateEthAddress from "@/lib/truncateAddress"
 import { BondLoadingModal } from "@/components/bond-loading-modal";
+import Header from "@/components/layout/header";
 
 
 function UserResolver({address}:{address:`0x${string}`}) {
@@ -41,8 +42,8 @@ function UserResolver({address}:{address:`0x${string}`}) {
 
 export default function Dashboard() {
   const { isConnected, address, status: accountStatus } = useAccount();
-  const { data: userWallet, isLoading: walletLoading } = useUserWalletFromRegistry(address ?? NULL_ADDRESS);
-  const { data: userDetails, isLoading: userDetailsLoading } = useUserDetails(address ?? NULL_ADDRESS);
+  const { data: userWallet, isLoading: walletLoading, refetch:refetchUserWallet } = useUserWalletFromRegistry(address ?? NULL_ADDRESS);
+  const { data: userDetails, isLoading: userDetailsLoading, refetch: refetchUserDetails} = useUserDetails(address ?? NULL_ADDRESS);
   const [bondAddress, setBondAddress] = useState<string | undefined>(undefined)
   const [isBondModalOpen, setIsBondModalOpen] = useState(false)
   const [bondModalType, setBondModalType] = useState<'create' | 'withdraw' | 'break' | 'stake'>('create')
@@ -50,6 +51,14 @@ export default function Dashboard() {
   // Modal States
   const [showOnboardModal, setShowOnboardModal] = useState(false);
   const [showConnectModal, setShowConnectModal] = useState(false);
+
+
+  const refetchData = async () => {
+    await Promise.all([
+      refetchUserDetails(),
+      refetchUserWallet()
+    ]);
+  };
 
   // UseEffect to open OnBoard modal if userWallet is NULL
   useEffect(() => {
@@ -76,12 +85,16 @@ export default function Dashboard() {
   if(walletLoading){
     return <BondLoadingModal/>
   }
+
+  console.log("USER WALLET", userWallet)
+  console.log("USER DETAILS", userDetails)
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#cdffd8] to-[#94b9ff]">
+     
       <main className="container mx-auto p-4 flex flex-col gap-8">
         {/* Header */}
         <div className="flex flex-col gap-2">
-          <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-[#94b9ff]">
+          <h1 className="text-4xl font-bold bg-clip-text text-primary">
             Trust Dashboard
           </h1>
           <p className="text-lg text-muted-foreground">
@@ -103,11 +116,20 @@ export default function Dashboard() {
                 </div>
               </CardHeader>
               <CardContent>
-              <div className="text-2xl font-bold">${userDetails?.totalAmount !== undefined ? (Number(formateDefaultAssetAmount(BigInt(userDetails.totalAmount))) - Number(formateDefaultAssetAmount(BigInt(userDetails.totalWithdrawnAmount))) - Number(formateDefaultAssetAmount(BigInt(userDetails.totalBrokenAmount)))):0}</div>
-              <div>${userDetails?.totalWithdrawnAmount !== undefined ? formateDefaultAssetAmount(BigInt(userDetails.totalWithdrawnAmount)) : 0}</div>
-              <div>${userDetails?.totalBrokenAmount !== undefined ? formateDefaultAssetAmount(BigInt(userDetails.totalBrokenAmount)) : 0}</div>
+              <div className="text-2xl font-bold">
+                ${userDetails?.totalAmount !== undefined
+                  ? (
+                      Number(formateDefaultAssetAmount(BigInt(userDetails.totalAmount))) -
+                      Number(formateDefaultAssetAmount(BigInt(userDetails.totalWithdrawnAmount))) -
+                      Number(formateDefaultAssetAmount(BigInt(userDetails.totalBrokenAmount)))
+                    ).toFixed(2)
+                  : '0.00'
+                }
+              </div>
+              <div className="text-sm text-muted-foreground mt-1">Total Withdrawn Amount: ${userDetails?.totalWithdrawnAmount !== undefined ? (Number(formateDefaultAssetAmount(BigInt(userDetails.totalWithdrawnAmount)))).toFixed(2) : '0.00'}</div>
+              <div className="text-sm text-muted-foreground mt-1">Total Broken Amount: ${userDetails?.totalBrokenAmount !== undefined ? (Number(formateDefaultAssetAmount(BigInt(userDetails.totalBrokenAmount)))).toFixed(2) : "0.00"}</div>
                 {/* <div className="text-2xl font-bold">${userDetails?.totalAmount !== undefined && userDetails?.totalWithdrawnAmount !== undefined ? formateDefaultAssetAmount(BigInt(userDetails.totalAmount) - ((BigInt(userDetails.totalWithdrawnAmount)) + BigInt(userDetails.totalBrokenAmount))): 'N/A'}</div> */}
-                <p className="text-xs text-muted-foreground mt-1">Total Amount LifeTime ${userDetails?.totalAmount !== undefined ? formateDefaultAssetAmount(BigInt(userDetails.totalAmount)) : 'N/A'}</p>
+                <div className="text-sm text-muted-foreground mt-1">Total Amount LifeTime: ${userDetails?.totalAmount !== undefined ? (Number(formateDefaultAssetAmount(BigInt(userDetails.totalAmount)))).toFixed(2) : 'N/A'}</div>
               </CardContent>
           </Card>
 
@@ -133,7 +155,10 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{userDetails?.totalActiveBonds ?? 0}</div>
-                <p className="text-xs text-muted-foreground mt-1">{userDetails?.totalBrokenBonds} broken bonds, {userDetails?.totalWithdrawnBonds} withdrawn bonds</p>
+                <div className="text-sm text-muted-foreground mt-1">Total Broken Bonds: {userDetails?.totalBrokenBonds} </div>
+                <div className="text-sm text-muted-foreground mt-1">Total Withdrawn Bonds: {userDetails?.totalWithdrawnBonds} </div>
+                <div className="text-sm text-muted-foreground mt-1">Total Bonds: {userDetails?.totalBonds} </div>
+                
               </CardContent>
             </Card>
 
@@ -325,8 +350,12 @@ export default function Dashboard() {
         onClose={() => setIsBondModalOpen(false)}
         type={bondModalType}
         bondAddress={bondAddress}
+        onSuccess={refetchData}
       />
+      
       </AnimatePresence>
     </div>
   );
 }
+
+
