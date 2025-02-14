@@ -69,6 +69,10 @@ export function CreateBondForm({ onClose, onSuccess }: { onClose: () => void, on
         toast.error("No wallet found")
         throw new Error("No wallet found")
       }
+      if(finalAddress === address) {
+        toast.error("You can't bond with yourself");
+        throw new Error("cant bond with yourself");
+      }
       if (!isAddress(formData.user2)) {
         const client = createPublicClient({
           chain: mainnet,
