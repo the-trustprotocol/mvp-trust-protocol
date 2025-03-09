@@ -34,15 +34,15 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-4 xl:space-x-6">
-            <Link
+            {/* <Link
               href="/leaderboard"
               className="text-sm xl:text-base font-medium text-primary-foreground hover:underline hover:text-primary transition-colors flex items-center gap-1"
             >
               <Trophy className="w-4 h-4" />
               Leaderboard
-            </Link>
+            </Link> */}
             {[
-              { href: "https://www.overleaf.com/read/zyhmdxynwxgt#a050e6", label: "Whitepaper" },
+              { href: "https://drive.google.com/file/d/1M1AUNLmCvXPADI_5Ld7QKYN2WImuDJWJ/view?usp=sharing", label: "Whitepaper" },
               { href: "https://t.me/+e2_TcJOoNO80MzA9", label: "Telegram" },
               { href: "https://x.com/_trustprotocol", label: "Twitter" },
               { href: "https://github.com/the-trustprotocol", label: "Github" }
@@ -101,14 +101,14 @@ export default function Header() {
           border-l border-white/20 shadow-xl
         `}>
           <div className="flex flex-col gap-2">
-            <Link
+            {/* <Link
               href="/leaderboard"
               className="flex items-center gap-3 p-3 rounded-xl bg-white/20 hover:bg-white/30 transition-all text-primary font-medium"
               onClick={toggleMenu}
             >
               <Trophy className="w-5 h-5" />
               <span className="text-base">Leaderboard</span>
-            </Link>
+            </Link> */}
             {[
               { href: "https://www.overleaf.com/read/zyhmdxynwxgt#a050e6", icon: "📄", label: "Whitepaper" },
               { href: "https://t.me/+e2_TcJOoNO80MzA9", icon: "💬", label: "Telegram" },
