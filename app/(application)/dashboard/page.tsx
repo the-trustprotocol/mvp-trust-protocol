@@ -28,17 +28,47 @@ import AnimatedWalletConnect from "@/components/animated-connect-button";
 import { BondModal } from "@/components/bond-modal";
 import truncateEthAddress from "@/lib/truncateAddress"
 import { BondLoadingModal } from "@/components/bond-loading-modal";
+import { getEnsName } from "viem/actions";
+import { mainnet } from "viem/chains";
+import { createPublicClient, http } from "viem";
 import Header from "@/components/layout/header";
 
 
-function UserResolver({address}:{address:`0x${string}`}) {
-  const {data:userWallet,isLoading} = useResolveUserWallet(address )
-  if(isLoading) {
-    return <span>Loading...</span>
-  }
-  return (<span>{truncateEthAddress(userWallet ?? NULL_ADDRESS)}</span>)
+function UserResolver({ address }: { address: `0x${string}` }) {
+  const { data: userWallet, isLoading } = useResolveUserWallet(address);
+  const [ensName, setEnsName] = useState<string | null>(null);
 
+  useEffect(() => {
+    async function fetchENS() {
+      const client = createPublicClient({
+        chain: mainnet,
+        transport: http(),
+      });
+
+      console.log(userWallet)
+      try {
+        const ens = await getEnsName(client, { address: userWallet ?? NULL_ADDRESS });
+        setEnsName(ens);
+      } catch (error) {
+        console.error("Failed to fetch ENS name:", error);
+        setEnsName(null);
+      }
+    }
+
+    fetchENS();
+  }, [address, userWallet]);
+
+  if (isLoading) {
+    return <span>Loading...</span>;
+  }
+
+  return (
+    <span>
+      {ensName ? ensName : truncateEthAddress(userWallet ?? NULL_ADDRESS)}
+    </span>
+  );
 }
+
 
 export default function Dashboard() {
   const { isConnected, address, status: accountStatus } = useAccount();
@@ -357,5 +387,3 @@ export default function Dashboard() {
     </div>
   );
 }
-
-
